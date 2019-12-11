@@ -12,6 +12,8 @@ namespace Cascade\Tests\Config\Loader\ClassLoader\Resolver;
 
 use Cascade\Util;
 use Cascade\Config\Loader\ClassLoader\Resolver\ConstructorResolver;
+use PHPUnit\Framework\TestCase;
+use Cascade\Tests\Fixtures\SampleClass;
 
 use Symfony;
 
@@ -20,7 +22,7 @@ use Symfony;
  *
  * @author Raphael Antonmattei <rantonmattei@theorchard.com>
  */
-class ConstructorResolverTest extends \PHPUnit_Framework_TestCase
+class ConstructorResolverTest extends TestCase
 {
     /**
      * Reflection class for which you want to resolve extra options

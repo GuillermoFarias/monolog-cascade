@@ -12,13 +12,14 @@ namespace Cascade\Tests\Config;
 
 use Cascade\Config\ConfigLoader;
 use Cascade\Tests\Fixtures;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class ConfigLoaderTest
  *
  * @author Raphael Antonmattei <rantonmattei@theorchard.com>
  */
-class ConfigLoaderTest extends \PHPUnit_Framework_TestCase
+class ConfigLoaderTest extends TestCase
 {
     /**
      * Loader to test against

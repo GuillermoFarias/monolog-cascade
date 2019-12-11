@@ -13,6 +13,7 @@ namespace Cascade\Tests\Config\Loader\FileLoader;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\Config\FileLocatorInterface;
 use org\bovigo\vfs\vfsStream;
+use PHPUnit\Framework\TestCase;
 
 use Cascade\Tests\Fixtures;
 
@@ -21,7 +22,7 @@ use Cascade\Tests\Fixtures;
  *
  * @author Raphael Antonmattei <rantonmattei@theorchard.com>
  */
-class FileLoaderAbstractTest extends \PHPUnit_Framework_TestCase
+class FileLoaderAbstractTest extends TestCase
 {
     /**
      * Mock of extending Cascade\Config\Loader\FileLoader\FileLoaderAbstract
@@ -33,7 +34,7 @@ class FileLoaderAbstractTest extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
 
-        $fileLocatorMock = $this->getMock(
+        $fileLocatorMock = $this->createMock(
             'Symfony\Component\Config\FileLocatorInterface'
         );
 

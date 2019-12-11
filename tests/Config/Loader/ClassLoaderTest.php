@@ -10,6 +10,11 @@
  */
 namespace Cascade\Tests\Config\Loader;
 
+use Monolog\Handler\TestHandler;
+use Monolog\Logger;
+use Monolog\Registry;
+use PHPUnit\Framework\TestCase;
+
 use Cascade\Config\Loader\ClassLoader;
 use Cascade\Tests\Fixtures\DependentClass;
 use Cascade\Tests\Fixtures\SampleClass;
@@ -20,7 +25,7 @@ use Cascade\Tests\Fixtures\SampleClass;
  * @author Raphael Antonmattei <rantonmattei@theorchard.com>
  * @author Dom Morgan <dom@d3r.com>
  */
-class ClassLoaderTest extends \PHPUnit_Framework_TestCase
+class ClassLoaderTest extends TestCase
 {
     /**
      * Set up function

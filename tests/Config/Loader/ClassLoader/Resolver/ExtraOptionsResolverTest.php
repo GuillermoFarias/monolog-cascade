@@ -13,13 +13,15 @@ namespace Cascade\Tests\Config\Loader\ClassLoader\Resolver;
 use Cascade\Config\Loader\ClassLoader\Resolver\ExtraOptionsResolver;
 
 use Symfony;
+use PHPUnit\Framework\TestCase;
+use Cascade\Tests\Fixtures\SampleClass;
 
 /**
  * Class ExtraOptionsResolverTest
  *
  * @author Raphael Antonmattei <rantonmattei@theorchard.com>
  */
-class ExtraOptionsResolverTest extends \PHPUnit_Framework_TestCase
+class ExtraOptionsResolverTest extends TestCase
 {
     /**
      * Reflection class for which you want to resolve extra options

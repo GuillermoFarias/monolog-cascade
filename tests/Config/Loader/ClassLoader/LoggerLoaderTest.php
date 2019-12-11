@@ -13,6 +13,7 @@ namespace Cascade\Tests\Config\Loader\ClassLoader;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
 use Monolog\Registry;
+use PHPUnit\Framework\TestCase;
 
 use Cascade\Config\Loader\ClassLoader\LoggerLoader;
 
@@ -21,7 +22,7 @@ use Cascade\Config\Loader\ClassLoader\LoggerLoader;
  *
  * @author Raphael Antonmattei <rantonmattei@theorchard.com>
  */
-class LoggerLoaderTest extends \PHPUnit_Framework_TestCase
+class LoggerLoaderTest extends TestCase
 {
     /**
      * Tear down function

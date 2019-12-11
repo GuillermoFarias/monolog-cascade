@@ -11,13 +11,14 @@
 namespace Cascade\Tests\Config\Loader\ClassLoader;
 
 use Cascade\Config\Loader\ClassLoader\FormatterLoader;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class FormatterLoaderTest
  *
  * @author Raphael Antonmattei <rantonmattei@theorchard.com>
  */
-class FormatterLoaderTest extends \PHPUnit_Framework_TestCase
+class FormatterLoaderTest extends TestCase
 {
     /**
      * Set up function

@@ -11,6 +11,9 @@
 namespace Cascade\Tests\Config\Loader\ClassLoader;
 
 use Monolog\Formatter\LineFormatter;
+use Monolog\Processor\MemoryUsageProcessor;
+use Monolog\Processor\WebProcessor;
+use PHPUnit\Framework\TestCase;
 
 use Cascade\Config\Loader\ClassLoader\HandlerLoader;
 
@@ -19,7 +22,7 @@ use Cascade\Config\Loader\ClassLoader\HandlerLoader;
  *
  * @author Raphael Antonmattei <rantonmattei@theorchard.com>
  */
-class HandlerLoaderTest extends \PHPUnit_Framework_TestCase
+class HandlerLoaderTest extends TestCase
 {
     public function testHandlerLoader()
     {
@@ -244,8 +247,8 @@ class HandlerLoaderTest extends \PHPUnit_Framework_TestCase
     {
         $options = array();
 
-        $mockProcessor1 = '123';
-        $mockProcessor2 = '456';
+        $mockProcessor1 = $this->createMock(WebProcessor::class);
+        $mockProcessor2 = $this->createMock(MemoryUsageProcessor::class);
         $processorsArray = array($mockProcessor1, $mockProcessor2);
 
         // Setup mock and expectations

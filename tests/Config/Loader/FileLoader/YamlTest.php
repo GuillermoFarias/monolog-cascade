@@ -13,13 +13,14 @@ namespace Cascade\Tests\Config\Loader\FileLoader;
 use Symfony\Component\Yaml\Yaml as YamlParser;
 
 use Cascade\Tests\Fixtures;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class YamlTest
  *
  * @author Raphael Antonmattei <rantonmattei@theorchard.com>
  */
-class YamlTest extends \PHPUnit_Framework_TestCase
+class YamlTest extends TestCase
 {
     /**
      * Yaml loader mock builder
@@ -31,7 +32,7 @@ class YamlTest extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
 
-        $fileLocatorMock = $this->getMock(
+        $fileLocatorMock = $this->createMock(
             'Symfony\Component\Config\FileLocatorInterface'
         );
 
