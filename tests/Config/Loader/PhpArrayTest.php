@@ -12,14 +12,19 @@ namespace Cascade\Tests\Config\Loader;
 
 use Cascade\Config\Loader\PhpArray as ArrayLoader;
 use Cascade\Tests\Fixtures;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class PhpArrayTest
  *
  * @author Raphael Antonmattei <rantonmattei@theorchard.com>
  */
-class PhpArrayTest extends \PHPUnit_Framework_TestCase
+class PhpArrayTest extends TestCase
 {
+    /**
+     * Array loader object
+     * @var ArrayLoader
+     */
     protected $arrayLoader = null;
 
     public function setUp()
@@ -46,6 +51,7 @@ class PhpArrayTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Data provider for testSupportsWithInvalidResource
+     *
      * @return array array of non-array values
      */
     public function notStringDataProvider()
@@ -57,16 +63,15 @@ class PhpArrayTest extends \PHPUnit_Framework_TestCase
             array(123.456),
             array(null),
             array(new \stdClass),
-            // array(function () {
-            // })
-            // cannot test Closure type because of PhpUnit
-            // @see https://github.com/sebastianbergmann/phpunit/issues/451
+            array(function () {
+            })
         );
     }
 
     /**
      * Test loading resources supported by the YamlLoader
      *
+     * @param mixed $invalidResource Invalid resource value
      * @dataProvider notStringDataProvider
      */
     public function testSupportsWithInvalidResource($invalidResource)

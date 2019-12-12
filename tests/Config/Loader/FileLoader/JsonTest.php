@@ -10,23 +10,27 @@
  */
 namespace Cascade\Tests\Config\Loader\FileLoader;
 
-use Cascade\Config\Loader\FileLoader\Json as JsonLoader;
 use Cascade\Tests\Fixtures;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class JsonTest
  *
  * @author Raphael Antonmattei <rantonmattei@theorchard.com>
  */
-class JsonTest extends \PHPUnit_Framework_TestCase
+class JsonTest extends TestCase
 {
+    /**
+     * JSON loader mock builder
+     * @var \PHPUnit_Framework_MockObject_MockBuilder
+     */
     protected $jsonLoader = null;
 
     public function setUp()
     {
         parent::setUp();
 
-        $fileLocatorMock = $this->getMock(
+        $fileLocatorMock = $this->createMock(
             'Symfony\Component\Config\FileLocatorInterface'
         );
 
@@ -63,6 +67,7 @@ class JsonTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Data provider for testSupportsWithInvalidResource
+     *
      * @return array array non-string values
      */
     public function notStringDataProvider()
@@ -74,16 +79,15 @@ class JsonTest extends \PHPUnit_Framework_TestCase
             array(123.456),
             array(null),
             array(new \stdClass),
-            // array(function () {
-            // })
-            // cannot test Closure type because of PhpUnit
-            // @see https://github.com/sebastianbergmann/phpunit/issues/451
+            array(function () {
+            })
         );
     }
 
     /**
      * Test loading resources supported by the JsonLoader
      *
+     * @param mixed $invalidResource Invalid resource value
      * @dataProvider notStringDataProvider
      */
     public function testSupportsWithInvalidResource($invalidResource)

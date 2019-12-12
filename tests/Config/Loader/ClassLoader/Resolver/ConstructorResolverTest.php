@@ -10,28 +10,28 @@
  */
 namespace Cascade\Tests\Config\Loader\ClassLoader\Resolver;
 
+use Cascade\Util;
 use Cascade\Config\Loader\ClassLoader\Resolver\ConstructorResolver;
+use PHPUnit\Framework\TestCase;
 use Cascade\Tests\Fixtures\SampleClass;
 
-use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
+use Symfony;
 
 /**
  * Class ConstructorResolverTest
  *
  * @author Raphael Antonmattei <rantonmattei@theorchard.com>
  */
-class ConstructorResolverTest extends \PHPUnit_Framework_TestCase
+class ConstructorResolverTest extends TestCase
 {
     /**
      * Reflection class for which you want to resolve extra options
-     *
      * @var \ReflectionClass
      */
     protected $reflected = null;
 
     /**
      * Constructor Resolver
-     *
      * @var ConstructorResolver
      */
     protected $resolver = null;
@@ -59,7 +59,7 @@ class ConstructorResolverTest extends \PHPUnit_Framework_TestCase
     /**
      * Return the contructor args of the reflected class
      *
-     * @return ReflectionParameter[] array of params
+     * @return \ReflectionParameter[] array of params
      */
     protected function getConstructorArgs()
     {
@@ -77,16 +77,15 @@ class ConstructorResolverTest extends \PHPUnit_Framework_TestCase
     /**
      * Test that constructor args were pulled properly
      *
-     * Notie that we need to deuplicate the CamelCase conversion here for old
+     * Note that we need to deuplicate the CamelCase conversion here for old
      * fashioned classes
      */
     public function testInitConstructorArgs()
     {
         $expectedConstructorArgs = array();
-        $nameConverter = new CamelCaseToSnakeCaseNameConverter();
 
         foreach ($this->getConstructorArgs() as $param) {
-            $expectedConstructorArgs[$nameConverter->denormalize($param->getName())] = $param;
+            $expectedConstructorArgs[Util::snakeToCamelCase($param->getName())] = $param;
         }
         $this->assertEquals($expectedConstructorArgs, $this->resolver->getConstructorArgs());
     }
@@ -111,10 +110,11 @@ class ConstructorResolverTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Data provider for testResolve
-     * @return array of arrays with expected resolved values and options used as input
      *
      * The order of the input options does not matter and is somewhat random. The resolution
      * should reconcile those options and match them up with the contructor param position
+     *
+     * @return array of arrays with expected resolved values and options used as input
      */
     public function optionsProvider()
     {
@@ -145,19 +145,23 @@ class ConstructorResolverTest extends \PHPUnit_Framework_TestCase
     /**
      * Test resolving with valid options
      *
+     * @param array $expectedResolvedOptions Array of expected resolved options
+     * (i.e. parsed and validated)
+     * @param  array $options Array of raw options
      * @dataProvider optionsProvider
      */
-    public function testResolve($expectedResolvedOptions, $options)
+    public function testResolve(array $expectedResolvedOptions, array $options)
     {
         $this->assertEquals($expectedResolvedOptions, $this->resolver->resolve($options));
     }
 
     /**
-     * Data provider for testResolveWithInvalidOptions
-     * @return array of arrays with expected resolved values and options used as input
+     * Data provider for testResolveWithInvalidOptions.
      *
      * The order of the input options does not matter and is somewhat random. The resolution
      * should reconcile those options and match them up with the contructor param position
+     *
+     * @return array of arrays with expected resolved values and options used as input
      */
     public function missingOptionsProvider()
     {
@@ -177,22 +181,24 @@ class ConstructorResolverTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test resolving with invalid options
+     * Test resolving with missing/incomplete options. It should throw an exception.
      *
+     * @param  array $incompleteOptions Array of invalid options
      * @dataProvider missingOptionsProvider
      * @expectedException Symfony\Component\OptionsResolver\Exception\MissingOptionsException
      */
-    public function testResolveWithMissingOptions($invalidOptions)
+    public function testResolveWithMissingOptions(array $incompleteOptions)
     {
-        $this->resolver->resolve($invalidOptions);
+        $this->resolver->resolve($incompleteOptions);
     }
 
     /**
      * Data provider for testResolveWithInvalidOptions
-     * @return array of arrays with expected resolved values and options used as input
      *
      * The order of the input options does not matter and is somewhat random. The resolution
      * should reconcile those options and match them up with the contructor param position
+     *
+     * @return array of arrays with expected resolved values and options used as input
      */
     public function invalidOptionsProvider()
     {
@@ -214,8 +220,9 @@ class ConstructorResolverTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test resolving with invalid options
+     * Test resolving with invalid options. It should throw an exception.
      *
+     * @param  array $invalidOptions Array of invalid options
      * @dataProvider invalidOptionsProvider
      * @expectedException Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException
      */

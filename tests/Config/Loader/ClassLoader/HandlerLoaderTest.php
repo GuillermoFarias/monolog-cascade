@@ -11,6 +11,9 @@
 namespace Cascade\Tests\Config\Loader\ClassLoader;
 
 use Monolog\Formatter\LineFormatter;
+use Monolog\Processor\MemoryUsageProcessor;
+use Monolog\Processor\WebProcessor;
+use PHPUnit\Framework\TestCase;
 
 use Cascade\Config\Loader\ClassLoader\HandlerLoader;
 
@@ -19,7 +22,7 @@ use Cascade\Config\Loader\ClassLoader\HandlerLoader;
  *
  * @author Raphael Antonmattei <rantonmattei@theorchard.com>
  */
-class HandlerLoaderTest extends \PHPUnit_Framework_TestCase
+class HandlerLoaderTest extends TestCase
 {
     public function testHandlerLoader()
     {
@@ -27,7 +30,7 @@ class HandlerLoaderTest extends \PHPUnit_Framework_TestCase
             // Empty function
         };
         $original = $options = array(
-            'class' => '\Monolog\Handler\TestHandler',
+            'class' => 'Monolog\Handler\TestHandler',
             'level' => 'DEBUG',
             'formatter' => 'test_formatter',
             'processors' => array('test_processor_1', 'test_processor_2')
@@ -54,7 +57,7 @@ class HandlerLoaderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException InvalidArgumentException
+     * @expectedException \InvalidArgumentException
      */
     public function testHandlerLoaderWithInvalidFormatter()
     {
@@ -67,7 +70,7 @@ class HandlerLoaderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException InvalidArgumentException
+     * @expectedException \InvalidArgumentException
      */
     public function testHandlerLoaderWithInvalidProcessor()
     {
@@ -84,7 +87,7 @@ class HandlerLoaderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException InvalidArgumentException
+     * @expectedException \InvalidArgumentException
      */
     public function testHandlerLoaderWithInvalidHandler()
     {
@@ -102,7 +105,7 @@ class HandlerLoaderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException InvalidArgumentException
+     * @expectedException \InvalidArgumentException
      */
     public function testHandlerLoaderWithInvalidHandlers()
     {
@@ -129,6 +132,7 @@ class HandlerLoaderTest extends \PHPUnit_Framework_TestCase
      * @param  string $class Class name the handler applies to
      * @param  string $optionName Option name
      * @return \Closure Closure
+     * @throws \Exception
      */
     private function getHandler($class, $optionName)
     {
@@ -154,10 +158,10 @@ class HandlerLoaderTest extends \PHPUnit_Framework_TestCase
      * Tests that calling the given Closure will trigger a method call with the given param
      * in the given class
      *
-     * @param  string   $class      Class name
-     * @param  string   $methodName Method name
-     * @param  mixed    $methodArg  Parameter passed to the closure
-     * @param  \Closure $closure    Closure to call
+     * @param  string $class Class name
+     * @param  string $methodName Method name
+     * @param  mixed $methodArg Parameter passed to the closure
+     * @param  \Closure $closure Closure to call
      */
     private function doTestMethodCalledInHandler($class, $methodName, $methodArg, \Closure $closure)
     {
@@ -216,6 +220,10 @@ class HandlerLoaderTest extends \PHPUnit_Framework_TestCase
     /**
      * Test the extra option handlers
      *
+     * @param  string $class Class name
+     * @param  string $optionName Option name
+     * @param  mixed $optionValue Option value
+     * @param  string $calledMethodName Expected called method name
      * @dataProvider handlerParamsProvider
      */
     public function testHandlers($class, $optionName, $optionValue, $calledMethodName)
@@ -239,8 +247,8 @@ class HandlerLoaderTest extends \PHPUnit_Framework_TestCase
     {
         $options = array();
 
-        $mockProcessor1 = '123';
-        $mockProcessor2 = '456';
+        $mockProcessor1 = $this->createMock(WebProcessor::class);
+        $mockProcessor2 = $this->createMock(MemoryUsageProcessor::class);
         $processorsArray = array($mockProcessor1, $mockProcessor2);
 
         // Setup mock and expectations

@@ -10,20 +10,18 @@
  */
 namespace Cascade;
 
-use Cascade\Config;
-use Cascade\Config\ConfigLoader;
 use Monolog\Handler\HandlerInterface;
 use Monolog\Logger;
 use Monolog\Registry;
 
+use Cascade\Config\ConfigLoader;
+
 /**
  * Module class that manages Monolog Logger object
+ * @see Logger
+ * @see Registry
  *
  * @author Raphael Antonmattei <rantonmattei@theorchard.com>
- *
- * @see    \Monolog\Logger
- * @see    \Monolog\Registry
- *
  */
 class Cascade
 {
@@ -36,17 +34,16 @@ class Cascade
 
     /**
      * Create a new Logger object and push it to the registry
+     * @see Logger::__construct
      *
-     * @see Monolog\Logger::__construct
+     * @throws \InvalidArgumentException if no name is given
      *
-     * @param string             $name       The logging channel
-     * @param HandlerInterface[] $handlers   Optional stack of handlers, the first one in the array is called first,
-     *                                       etc.
-     * @param callable[]        $processors Optional array of processors
+     * @param string $name The logging channel
+     * @param HandlerInterface[] $handlers Optional stack of handlers, the first
+     * one in the array is called first, etc.
+     * @param callable[] $processors Optional array of processors
      *
-     * @throws \InvalidArgumentException: if no name is given
-     *
-     * @return Logger newly created Logger
+     * @return Logger Newly created Logger
      */
     public static function createLogger(
         $name,
@@ -93,7 +90,7 @@ class Cascade
     /**
      * Return the config options
      *
-     * @return array array with configuration options
+     * @return Config Array with configuration options
      */
     public static function getConfig()
     {
@@ -101,14 +98,36 @@ class Cascade
     }
 
     /**
-     * Load configuration options from a file or a string
+     * Load configuration options from a file, a JSON or Yaml string or an array.
      *
-     * @param string $resource path to config file or string or array
+     * @param string|array $resource Path to config file or configuration as string or array
      */
     public static function fileConfig($resource)
     {
         self::$config = new Config($resource, new ConfigLoader());
         self::$config->load();
         self::$config->configure();
+    }
+
+    /**
+     * Load configuration options from a JSON or Yaml string. Alias of fileConfig.
+     * @see fileConfig
+     *
+     * @param string $configString Configuration in string form
+     */
+    public static function loadConfigFromString($configString)
+    {
+        self::fileConfig($configString);
+    }
+
+    /**
+     * Load configuration options from an array. Alias of fileConfig.
+     * @see fileConfig
+     *
+     * @param array $configArray Configuration in array form
+     */
+    public static function loadConfigFromArray($configArray)
+    {
+        self::fileConfig($configArray);
     }
 }

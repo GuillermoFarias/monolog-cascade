@@ -65,6 +65,7 @@ class SampleClass
      * @param mixed $mandatory Some mandatory param
      * @param string $optionalA Some optional param
      * @param string $optionalB Some other optional param
+     * @param string $optional_snake Some optional snake param
      */
     public function __construct(
         $mandatory,
@@ -88,7 +89,7 @@ class SampleClass
     /**
      * Function that sets the optionalA member
      *
-     * @param  mixed $value some value
+     * @param  mixed $value Some value
      */
     public function optionalA($value)
     {
@@ -98,7 +99,7 @@ class SampleClass
     /**
      * Function that sets the optionalX member
      *
-     * @param  mixed $value some value
+     * @param  mixed $value Some value
      */
     public function optionalX($value)
     {
@@ -108,7 +109,7 @@ class SampleClass
     /**
      * Function that sets the hello member
      *
-     * @param  mixed $value some value
+     * @param  mixed $value Some value
      */
     public function setHello($value)
     {
@@ -118,7 +119,7 @@ class SampleClass
     /**
      * Function that sets the there member
      *
-     * @param  mixed $value some value
+     * @param  mixed $value Some value
      */
     public function setThere($value)
     {

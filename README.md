@@ -40,8 +40,8 @@ Cascade::fileConfig($config);
 
 Then just use your logger as shown below
 ```php
-Cascade::getLogger('myApp')->info('Well, that works!');
-Cascade::getLogger('myApp')->error('Maybe not...');
+Cascade::getLogger('myLogger')->info('Well, that works!');
+Cascade::getLogger('myLogger')->error('Maybe not...');
 ```
 
 Configuring your loggers
@@ -222,7 +222,7 @@ You may want to have your Formatters and/or Handlers consume values other than v
 
     ```php
     self::$extraOptionHandlers = array(
-        '\Monolog\Formatter\LineFormatter' => array(
+        'Monolog\Formatter\LineFormatter' => array(
             'includeStacktraces' => function ($instance, $include) {
                 $instance->includeStacktraces($include);
             }
@@ -260,3 +260,8 @@ What's next?
 Symfony Users
 -------------
 You may want to use [MonologBundle](https://github.com/symfony/MonologBundle) as it integrates directly with your favorite framework.
+
+
+Under The Hood
+--------------
+Here is a [Medium post](https://medium.com/orchard-technology/enhancing-monolog-699efff1051d#.dw6qu1c2p) if you want to know more about the implementation.

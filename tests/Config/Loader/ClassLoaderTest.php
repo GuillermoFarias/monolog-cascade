@@ -13,17 +13,19 @@ namespace Cascade\Tests\Config\Loader;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
 use Monolog\Registry;
+use PHPUnit\Framework\TestCase;
 
 use Cascade\Config\Loader\ClassLoader;
-use Cascade\Tests\Fixtures\SampleClass;
 use Cascade\Tests\Fixtures\DependentClass;
+use Cascade\Tests\Fixtures\SampleClass;
 
 /**
  * Class ClassLoaderTest
  *
  * @author Raphael Antonmattei <rantonmattei@theorchard.com>
+ * @author Dom Morgan <dom@d3r.com>
  */
-class ClassLoaderTest extends \PHPUnit_Framework_TestCase
+class ClassLoaderTest extends TestCase
 {
     /**
      * Set up function
@@ -68,7 +70,8 @@ class ClassLoaderTest extends \PHPUnit_Framework_TestCase
     /**
      * Testing the setClass method
      *
-     * @param  array $options array of options
+     * @param  array $options Array of options
+     * @param  string $expectedClass Expected classname of the instantiated object
      * @dataProvider dataFortestSetClass
      */
     public function testSetClass($options, $expectedClass)
@@ -149,8 +152,6 @@ class ClassLoaderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test a nested class to load
-     *
-     * @author Dom Morgan <dom@d3r.com>
      */
     public function testLoadDependency()
     {

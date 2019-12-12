@@ -7,14 +7,15 @@
  */
 namespace Cascade\Tests\Config\Loader\FileLoader;
 
-use Cascade\Config\Loader\FileLoader\PhpArray as ArrayLoader;
-use Cascade\Tests\Fixtures;
 use Symfony\Component\Config\FileLocator;
+use PHPUnit\Framework\TestCase;
+
+use Cascade\Config\Loader\FileLoader\PhpArray as ArrayLoader;
 
 /**
  * Class PhpArrayTest
  */
-class PhpArrayTest extends \PHPUnit_Framework_TestCase
+class PhpArrayTest extends TestCase
 {
     /**
      * @var ArrayLoader
@@ -33,13 +34,13 @@ class PhpArrayTest extends \PHPUnit_Framework_TestCase
 
     public function testSupportsPhpFile()
     {
-        $this->assertTrue($this->loader->supports(__DIR__ . '/../../../Fixtures/fixture_config.php'));
+        $this->assertTrue($this->loader->supports(__DIR__.'/../../../Fixtures/fixture_config.php'));
     }
 
     public function testDoesNotSupportNonPhpFiles()
     {
         $this->assertFalse($this->loader->supports('foo'));
-        $this->assertFalse($this->loader->supports(__DIR__ . '/../../../Fixtures/fixture_config.json'));
+        $this->assertFalse($this->loader->supports(__DIR__.'/../../../Fixtures/fixture_config.json'));
     }
 
     /**
@@ -47,14 +48,14 @@ class PhpArrayTest extends \PHPUnit_Framework_TestCase
      */
     public function testThrowsExceptionWhenLoadingFileIfDoesNotReturnValidPhpArray()
     {
-        $this->loader->load(__DIR__ . '/../../../Fixtures/fixture_invalid_config.php');
+        $this->loader->load(__DIR__.'/../../../Fixtures/fixture_invalid_config.php');
     }
 
     public function testLoadsPhpArrayConfigFromFile()
     {
         $this->assertSame(
-            include __DIR__ . '/../../../Fixtures/fixture_config.php',
-            $this->loader->load(__DIR__ . '/../../../Fixtures/fixture_config.php')
+            include __DIR__.'/../../../Fixtures/fixture_config.php',
+            $this->loader->load(__DIR__.'/../../../Fixtures/fixture_config.php')
         );
     }
 }

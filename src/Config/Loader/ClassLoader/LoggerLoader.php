@@ -11,7 +11,8 @@
 namespace Cascade\Config\Loader\ClassLoader;
 
 use Cascade\Cascade;
-use Cascade\Config\Loader\ClassLoader;
+
+use Monolog;
 
 /**
  * Logger Loader. Instantiate a Logger and set passed in handlers and processors if any
@@ -29,7 +30,7 @@ class LoggerLoader
 
     /**
      * Array of handlers
-     * @var \Monolog\Handler\HandlerInterface[]
+     * @var Monolog\Handler\HandlerInterface[]
      */
     protected $handlers = array();
 
@@ -41,7 +42,7 @@ class LoggerLoader
 
     /**
      * Logger
-     * @var \Monolog\Logger
+     * @var Monolog\Logger
      */
     protected $logger = null;
 
@@ -50,7 +51,7 @@ class LoggerLoader
      *
      * @param string $loggerName Name of the logger
      * @param array  $loggerOptions Array of logger options
-     * @param \Monolog\Handler\HandlerInterface[] $handlers Array of Monolog handlers
+     * @param Monolog\Handler\HandlerInterface[] $handlers Array of Monolog handlers
      * @param callable[] $processors Array of processors
      */
     public function __construct(
@@ -73,9 +74,10 @@ class LoggerLoader
      *
      * @throws \InvalidArgumentException if a requested handler is not available in $handlers
      *
-     * @param  array $loggerOptions array of logger options
-     * @param  \Monolog\Handler\HandlerInterface[] $handlers Available Handlers to resolve against
-     * @return \Monolog\Handler\HandlerInterface[] Array of Monolog handlers
+     * @param  array $loggerOptions Array of logger options
+     * @param  Monolog\Handler\HandlerInterface[] $handlers Available Handlers to resolve against
+     *
+     * @return Monolog\Handler\HandlerInterface[] Array of Monolog handlers
      */
     public function resolveHandlers(array $loggerOptions, array $handlers)
     {
@@ -110,8 +112,9 @@ class LoggerLoader
      *
      * @throws \InvalidArgumentException if a requested processor is not available in $processors
      *
-     * @param  array $loggerOptions array of logger options
+     * @param  array $loggerOptions Array of logger options
      * @param  callable[] $processors Available Processors to resolve against
+     *
      * @return callable[] Array of Monolog processors
      */
     public function resolveProcessors(array $loggerOptions, $processors)
@@ -144,7 +147,7 @@ class LoggerLoader
     /**
      * Add handlers to the Logger
      *
-     * @param \Monolog\Handler\HandlerInterface[] Array of Monolog handlers
+     * @param Monolog\Handler\HandlerInterface[] Array of Monolog handlers
      */
     private function addHandlers(array $handlers)
     {
@@ -170,7 +173,7 @@ class LoggerLoader
     /**
      * Return the instantiated Logger object based on its name
      *
-     * @return \Monolog\Logger Logger object
+     * @return Monolog\Logger Logger object
      */
     public function load()
     {
