@@ -49,7 +49,7 @@ class Json extends FileLoaderAbstract
     {
         return (
             !empty($string) &&
-            ($string{0} === '[' || $string{0} === '{')
+            ($string[0] === '[' || $string[0] === '{')
         );
     }
 
