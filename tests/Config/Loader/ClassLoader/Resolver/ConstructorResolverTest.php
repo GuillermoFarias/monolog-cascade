@@ -8,39 +8,40 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Cascade\Tests\Config\Loader\ClassLoader\Resolver;
 
-use Cascade\Util;
 use Cascade\Config\Loader\ClassLoader\Resolver\ConstructorResolver;
-
+use Cascade\Util;
 use PHPUnit\Framework\TestCase;
-use Symfony;
 use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
 use Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException;
 
 /**
- * Class ConstructorResolverTest
+ * Class ConstructorResolverTest.
  *
  * @author Raphael Antonmattei <rantonmattei@theorchard.com>
  */
 class ConstructorResolverTest extends TestCase
 {
     /**
-     * Reflection class for which you want to resolve extra options
+     * Reflection class for which you want to resolve extra options.
+     *
      * @var \ReflectionClass
      */
     protected $reflected = null;
 
     /**
-     * Constructor Resolver
+     * Constructor Resolver.
+     *
      * @var ConstructorResolver
      */
     protected $resolver = null;
 
     /**
-     * Set up function
+     * Set up function.
      */
-    public function setUp(): void
+    public function setUp() : void
     {
         $this->class = 'Cascade\Tests\Fixtures\SampleClass';
         $this->resolver = new ConstructorResolver(new \ReflectionClass($this->class));
@@ -48,9 +49,9 @@ class ConstructorResolverTest extends TestCase
     }
 
     /**
-     * Tear down function
+     * Tear down function.
      */
-    public function tearDown(): void
+    public function tearDown() : void
     {
         $this->resolver = null;
         $this->class = null;
@@ -58,7 +59,7 @@ class ConstructorResolverTest extends TestCase
     }
 
     /**
-     * Return the contructor args of the reflected class
+     * Return the contructor args of the reflected class.
      *
      * @return \ReflectionParameter[] array of params
      */
@@ -68,7 +69,7 @@ class ConstructorResolverTest extends TestCase
     }
 
     /**
-     * Test the resolver contructor
+     * Test the resolver contructor.
      */
     public function testConstructor()
     {
@@ -76,14 +77,14 @@ class ConstructorResolverTest extends TestCase
     }
 
     /**
-     * Test that constructor args were pulled properly
+     * Test that constructor args were pulled properly.
      *
      * Note that we need to deuplicate the CamelCase conversion here for old
      * fashioned classes
      */
     public function testInitConstructorArgs()
     {
-        $expectedConstructorArgs = array();
+        $expectedConstructorArgs = [];
 
         foreach ($this->getConstructorArgs() as $param) {
             $expectedConstructorArgs[Util::snakeToCamelCase($param->getName())] = $param;
@@ -92,25 +93,25 @@ class ConstructorResolverTest extends TestCase
     }
 
     /**
-     * Test the hashToArgsArray function
+     * Test the hashToArgsArray function.
      */
     public function testHashToArgsArray()
     {
         $this->assertEquals(
-            array('someValue', 'hello', 'there', 'slither'),
+            ['someValue', 'hello', 'there', 'slither'],
             $this->resolver->hashToArgsArray(
-                array( // Not properly ordered on purpose
-                    'optionalB'     => 'there',
-                    'optionalA'     => 'hello',
+                [ // Not properly ordered on purpose
+                    'optionalB' => 'there',
+                    'optionalA' => 'hello',
                     'optionalSnake' => 'slither',
-                    'mandatory'     => 'someValue',
-                )
+                    'mandatory' => 'someValue',
+                ]
             )
         );
     }
 
     /**
-     * Data provider for testResolve
+     * Data provider for testResolve.
      *
      * The order of the input options does not matter and is somewhat random. The resolution
      * should reconcile those options and match them up with the contructor param position
@@ -119,36 +120,37 @@ class ConstructorResolverTest extends TestCase
      */
     public function optionsProvider()
     {
-        return array(
-            array(
-                array('someValue', 'hello', 'there', 'slither'), // Expected resolved options
-                array( // Options (order should not matter, part of resolution)
-                    'optionalB'      => 'there',
-                    'optionalA'      => 'hello',
-                    'mandatory'      => 'someValue',
-                    'optionalSnake'  => 'slither',
-                )
-            ),
-            array(
-                array('someValue', 'hello', 'BBB', 'snake'),
-                array(
+        return [
+            [
+                ['someValue', 'hello', 'there', 'slither'], // Expected resolved options
+                [ // Options (order should not matter, part of resolution)
+                    'optionalB' => 'there',
+                    'optionalA' => 'hello',
+                    'mandatory' => 'someValue',
+                    'optionalSnake' => 'slither',
+                ],
+            ],
+            [
+                ['someValue', 'hello', 'BBB', 'snake'],
+                [
                     'mandatory' => 'someValue',
                     'optionalA' => 'hello',
-                )
-            ),
-            array(
-                array('someValue', 'AAA', 'BBB', 'snake'),
-                array('mandatory' => 'someValue')
-            )
-        );
+                ],
+            ],
+            [
+                ['someValue', 'AAA', 'BBB', 'snake'],
+                ['mandatory' => 'someValue'],
+            ],
+        ];
     }
 
     /**
-     * Test resolving with valid options
+     * Test resolving with valid options.
      *
      * @param array $expectedResolvedOptions Array of expected resolved options
-     * (i.e. parsed and validated)
-     * @param  array $options Array of raw options
+     *                                       (i.e. parsed and validated)
+     * @param array $options                 Array of raw options
+     *
      * @dataProvider optionsProvider
      */
     public function testResolve(array $expectedResolvedOptions, array $options)
@@ -166,25 +168,26 @@ class ConstructorResolverTest extends TestCase
      */
     public function missingOptionsProvider()
     {
-        return array(
-            array(
-                array( // No values
-                ),
-                array( // Missing a mandatory value
-                    'optionalB' => 'BBB'
-                ),
-                array( // Still missing a mandatory value
+        return [
+            [
+                [// No values
+                ],
+                [ // Missing a mandatory value
+                    'optionalB' => 'BBB',
+                ],
+                [ // Still missing a mandatory value
                     'optionalB' => 'there',
-                    'optionalA' => 'hello'
-                )
-            )
-        );
+                    'optionalA' => 'hello',
+                ],
+            ],
+        ];
     }
 
     /**
      * Test resolving with missing/incomplete options. It should throw an exception.
      *
-     * @param  array $incompleteOptions Array of invalid options
+     * @param array $incompleteOptions Array of invalid options
+     *
      * @dataProvider missingOptionsProvider
      */
     public function testResolveWithMissingOptions(array $incompleteOptions)
@@ -195,7 +198,7 @@ class ConstructorResolverTest extends TestCase
     }
 
     /**
-     * Data provider for testResolveWithInvalidOptions
+     * Data provider for testResolveWithInvalidOptions.
      *
      * The order of the input options does not matter and is somewhat random. The resolution
      * should reconcile those options and match them up with the contructor param position
@@ -204,27 +207,28 @@ class ConstructorResolverTest extends TestCase
      */
     public function invalidOptionsProvider()
     {
-        return array(
-            array(
-                array('ABC'),
-                array( // All invalid
+        return [
+            [
+                ['ABC'],
+                [ // All invalid
                     'someInvalidOptionA' => 'abc',
-                    'someInvalidOptionB' => 'def'
-                ),
-                array( // Some invalid
+                    'someInvalidOptionB' => 'def',
+                ],
+                [ // Some invalid
                     'optionalB' => 'there',
                     'optionalA' => 'hello',
                     'mandatory' => 'dsadsa',
-                    'additionalInvalid' => 'some unknow param'
-                )
-            )
-        );
+                    'additionalInvalid' => 'some unknow param',
+                ],
+            ],
+        ];
     }
 
     /**
      * Test resolving with invalid options. It should throw an exception.
      *
-     * @param  array $invalidOptions Array of invalid options
+     * @param array $invalidOptions Array of invalid options
+     *
      * @dataProvider invalidOptionsProvider
      */
     public function testResolveWithInvalidOptions($invalidOptions)

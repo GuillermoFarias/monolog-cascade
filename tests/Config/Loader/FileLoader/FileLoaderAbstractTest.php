@@ -8,30 +8,29 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Cascade\Tests\Config\Loader\FileLoader;
 
+use Cascade\Tests\Fixtures;
+use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Config\FileLocator;
-use Symfony\Component\Config\FileLocatorInterface;
-use org\bovigo\vfs\vfsStream;
-
-use Cascade\Tests\Fixtures;
 
 /**
- * Class FileLoaderAbstractTest
+ * Class FileLoaderAbstractTest.
  *
  * @author Raphael Antonmattei <rantonmattei@theorchard.com>
  */
 class FileLoaderAbstractTest extends TestCase
 {
     /**
-     * Mock of extending Cascade\Config\Loader\FileLoader\FileLoaderAbstract
+     * Mock of extending Cascade\Config\Loader\FileLoader\FileLoaderAbstract.
+     *
      * @var MockObject
      */
     protected $mock = null;
 
-    public function setUp(): void
+    public function setUp() : void
     {
         parent::setUp();
 
@@ -40,22 +39,22 @@ class FileLoaderAbstractTest extends TestCase
 
         $this->mock = $this->getMockForAbstractClass(
             'Cascade\Config\Loader\FileLoader\FileLoaderAbstract',
-            array($fileLocatorMock),
+            [$fileLocatorMock],
             'FileLoaderAbstractMockClass' // mock class name
         );
 
         // Setting valid extensions for tests
-        \FileLoaderAbstractMockClass::$validExtensions = array('test', 'php');
+        \FileLoaderAbstractMockClass::$validExtensions = ['test', 'php'];
     }
 
-    public function tearDown(): void
+    public function tearDown() : void
     {
         $this->mock = null;
         parent::tearDown();
     }
 
     /**
-     * Test loading config from a valid file
+     * Test loading config from a valid file.
      */
     public function testReadFrom()
     {
@@ -66,7 +65,7 @@ class FileLoaderAbstractTest extends TestCase
     }
 
     /**
-     * Test loading config from a valid file
+     * Test loading config from a valid file.
      */
     public function testLoadFileFromString()
     {
@@ -77,26 +76,27 @@ class FileLoaderAbstractTest extends TestCase
     }
 
     /**
-     * Data provider for testGetSectionOf
+     * Data provider for testGetSectionOf.
      *
      * @return array array with original value, section and expected value
      */
     public function extensionsDataProvider()
     {
-        return array(
-            array(true, 'hello/world.test'),
-            array(true, 'hello/world.php'),
-            array(false, 'hello/world.jpeg'),
-            array(false, 'hello/world'),
-            array(false, '')
-        );
+        return [
+            [true, 'hello/world.test'],
+            [true, 'hello/world.php'],
+            [false, 'hello/world.jpeg'],
+            [false, 'hello/world'],
+            [false, ''],
+        ];
     }
 
     /**
-     * Test validating the extension
+     * Test validating the extension.
      *
-     * @param boolean $expected Expected boolean value
+     * @param bool   $expected Expected boolean value
      * @param string $filepath Filepath to validate
+     *
      * @dataProvider extensionsDataProvider
      */
     public function testValidateExtension($expected, $filepath)
@@ -109,40 +109,41 @@ class FileLoaderAbstractTest extends TestCase
     }
 
     /**
-     * Data provider for testGetSectionOf
+     * Data provider for testGetSectionOf.
      *
      * @return array array wit original value, section and expected value
      */
     public function arrayDataProvider()
     {
-        return array(
-            array(
-                array(
-                    'a' => array('aa' => 'AA', 'ab' => 'AB'),
-                    'b' => array('ba' => 'BA', 'bb' => 'BB')
-                ),
+        return [
+            [
+                [
+                    'a' => ['aa' => 'AA', 'ab' => 'AB'],
+                    'b' => ['ba' => 'BA', 'bb' => 'BB'],
+                ],
                 'b',
-                array('ba' => 'BA', 'bb' => 'BB')
-            ),
-            array(
-                array('a' => 'A', 'b' => 'B'),
+                ['ba' => 'BA', 'bb' => 'BB'],
+            ],
+            [
+                ['a' => 'A', 'b' => 'B'],
                 'c',
-                array('a' => 'A', 'b' => 'B'),
-            ),
-            array(
-                array('a' => 'A', 'b' => 'B'),
+                ['a' => 'A', 'b' => 'B'],
+            ],
+            [
+                ['a' => 'A', 'b' => 'B'],
                 '',
-                array('a' => 'A', 'b' => 'B'),
-            )
-        );
+                ['a' => 'A', 'b' => 'B'],
+            ],
+        ];
     }
 
     /**
-     * Test the getSectionOf function
+     * Test the getSectionOf function.
      *
-     * @param array $array Array of options
-     * @param string $section Section key
-     * @param array $expected Expected array for the given section
+     * @param array  $array    Array of options
+     * @param string $section  Section key
+     * @param array  $expected Expected array for the given section
+     *
      * @dataProvider arrayDataProvider
      */
     public function testGetSectionOf(array $array, $section, array $expected)
@@ -151,7 +152,7 @@ class FileLoaderAbstractTest extends TestCase
     }
 
     /**
-     * Test loading an invalid file
+     * Test loading an invalid file.
      */
     public function testloadFileFromInvalidFile()
     {
@@ -163,8 +164,8 @@ class FileLoaderAbstractTest extends TestCase
         // Adding an unreadable file (chmod 0000)
         vfsStream::newFile('config.yml', 0000)
             ->withContent(
-                "---\n".
-                "hidden_config: true"
+                "---\n" .
+                'hidden_config: true'
             )->at($root);
 
         // This will throw an exception because the file is not readable

@@ -8,15 +8,15 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Cascade\Tests\Config\Loader\ClassLoader;
 
-use Monolog\Processor\WebProcessor;
-
 use Cascade\Config\Loader\ClassLoader\ProcessorLoader;
+use Monolog\Processor\WebProcessor;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Class ProcessorLoaderTest
+ * Class ProcessorLoaderTest.
  *
  * @author Kate Burdon <kburdon@tableau.com>
  */
@@ -24,10 +24,10 @@ class ProcessorLoaderTest extends TestCase
 {
     public function testProcessorLoader()
     {
-        $options = array(
-            'class' => 'Monolog\Processor\WebProcessor'
-        );
-        $processors = array(new WebProcessor());
+        $options = [
+            'class' => 'Monolog\Processor\WebProcessor',
+        ];
+        $processors = [new WebProcessor()];
         $loader = new ProcessorLoader($options, $processors);
 
         $this->assertEquals($loader->class, $options['class']);

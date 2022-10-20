@@ -8,22 +8,23 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Cascade\Tests;
 
 class Fixtures
 {
     /**
-     * Return the fixture directory
+     * Return the fixture directory.
      *
      * @return string Fixture directory
      */
     public static function fixtureDir()
     {
-        return realpath(__DIR__.'/Fixtures');
+        return realpath(__DIR__ . '/Fixtures');
     }
 
     /**
-     * Return a path to a non existing file
+     * Return a path to a non existing file.
      *
      * @return string Wrong file path
      */
@@ -33,96 +34,96 @@ class Fixtures
     }
 
     /**
-     * Return the fixture Yaml config file
+     * Return the fixture Yaml config file.
      *
      * @return string Path to yaml config file
      */
     public static function getYamlConfigFile()
     {
-        return self::fixtureDir().'/fixture_config.yml';
+        return self::fixtureDir() . '/fixture_config.yml';
     }
 
     /**
-     * Return a config as Yaml
+     * Return a config as Yaml.
      *
      * @return string Yaml config
      */
     public static function getYamlConfig()
     {
-        return file_get_contents(self::fixtureDir().'/fixture_config.yml');
+        return file_get_contents(self::fixtureDir() . '/fixture_config.yml');
     }
 
     /**
-     * Return the fixture sample Yaml file
+     * Return the fixture sample Yaml file.
      *
      * @return string Path to a sample yaml file
      */
     public static function getSampleYamlFile()
     {
-        return self::fixtureDir().'/fixture_sample.yml';
+        return self::fixtureDir() . '/fixture_sample.yml';
     }
 
     /**
-     * Return the fixture sample Yaml string
+     * Return the fixture sample Yaml string.
      *
      * @return string Sample yaml string
      */
     public static function getSampleYamlString()
     {
         return trim(
-            '---'."\n".
-            'greeting: "hello"'."\n".
-            'to: "you"'."\n"
+            '---' . "\n" .
+            'greeting: "hello"' . "\n" .
+            'to: "you"' . "\n"
         );
     }
 
     /**
-     * Return the fixture JSON config file
+     * Return the fixture JSON config file.
      *
      * @return string Path to JSON config file
      */
     public static function getJsonConfigFile()
     {
-        return self::fixtureDir().'/fixture_config.json';
+        return self::fixtureDir() . '/fixture_config.json';
     }
 
     /**
-     * Return a config as JSON
+     * Return a config as JSON.
      *
      * @return string JSON config
      */
     public static function getJsonConfig()
     {
-        return file_get_contents(self::fixtureDir().'/fixture_config.json');
+        return file_get_contents(self::fixtureDir() . '/fixture_config.json');
     }
 
     /**
-     * Return the fixture sample JSON file
+     * Return the fixture sample JSON file.
      *
      * @return string Path to a sample JSON file
      */
     public static function getSampleJsonFile()
     {
-        return self::fixtureDir().'/fixture_sample.json';
+        return self::fixtureDir() . '/fixture_sample.json';
     }
 
     /**
-     * Return the fixture sample JSON string
+     * Return the fixture sample JSON string.
      *
      * @return string Sample JSON string
      */
     public static function getSampleJsonString()
     {
         return trim(
-            '{'."\n".
-            '    "greeting": "hello",'."\n".
-            '    "to": "you"'."\n".
-            '}'."\n"
+            '{' . "\n" .
+            '    "greeting": "hello",' . "\n" .
+            '    "to": "you"' . "\n" .
+            '}' . "\n"
         );
     }
 
     /**
-     * Return a sample string
+     * Return a sample string.
      *
      * @return string Sample string
      */
@@ -132,35 +133,35 @@ class Fixtures
     }
 
     /**
-     * Return the fixture PHP array config file
+     * Return the fixture PHP array config file.
      *
      * @return string Path to PHP array config file
      */
     public static function getPhpArrayConfigFile()
     {
-        return self::fixtureDir().'/fixture_config.php';
+        return self::fixtureDir() . '/fixture_config.php';
     }
 
     /**
-     * Return a config array
+     * Return a config array.
      *
      * @return array Config array
      */
     public static function getPhpArrayConfig()
     {
-        return require self::fixtureDir().'/fixture_config.php';
+        return require self::fixtureDir() . '/fixture_config.php';
     }
 
     /**
-     * Return a sample array
+     * Return a sample array.
      *
      * @return array Sample array
      */
     public static function getSamplePhpArray()
     {
-        return array(
+        return [
             'greeting' => 'hello',
-            'to' => 'you'
-        );
+            'to' => 'you',
+        ];
     }
 }

@@ -8,22 +8,22 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Cascade\Tests;
 
+use Cascade\Cascade;
 use Monolog\Logger;
 use Monolog\Registry;
-
-use Cascade\Cascade;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Class CascadeTest
+ * Class CascadeTest.
  *
  * @author Raphael Antonmattei <rantonmattei@theorchard.com>
  */
 class CascadeTest extends TestCase
 {
-    public function teardown(): void
+    public function teardown() : void
     {
         Registry::clear();
         parent::teardown();
