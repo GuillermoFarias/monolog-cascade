@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Monolog Cascade package.
  *
@@ -8,16 +9,17 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Cascade;
 
+use Cascade\Config\ConfigLoader;
 use Monolog\Handler\HandlerInterface;
 use Monolog\Logger;
 use Monolog\Registry;
 
-use Cascade\Config\ConfigLoader;
-
 /**
- * Module class that manages Monolog Logger object
+ * Module class that manages Monolog Logger object.
+ *
  * @see Logger
  * @see Registry
  *
@@ -27,30 +29,31 @@ class Cascade
 {
     /**
      * Config class that holds options for all registered loggers
-     * This is optional, you can set up your loggers programmatically
+     * This is optional, you can set up your loggers programmatically.
+     *
      * @var Config
      */
     protected static $config = null;
 
     /**
-     * Create a new Logger object and push it to the registry
+     * Create a new Logger object and push it to the registry.
+     *
      * @see Logger::__construct
      *
-     * @throws \InvalidArgumentException if no name is given
-     *
-     * @param string $name The logging channel
-     * @param HandlerInterface[] $handlers Optional stack of handlers, the first
-     * one in the array is called first, etc.
-     * @param callable[] $processors Optional array of processors
+     * @param string             $name       The logging channel
+     * @param HandlerInterface[] $handlers   optional stack of handlers, the first
+     *                                       one in the array is called first, etc
+     * @param callable[]         $processors Optional array of processors
      *
      * @return Logger Newly created Logger
+     *
+     * @throws \InvalidArgumentException if no name is given
      */
     public static function createLogger(
         $name,
-        array $handlers = array(),
-        array $processors = array()
+        array $handlers = [],
+        array $processors = []
     ) {
-
         if (empty($name)) {
             throw new \InvalidArgumentException('Logger name is required.');
         }
@@ -63,36 +66,49 @@ class Cascade
 
     /**
      * Get a Logger instance by name. Creates a new one if a Logger with the
-     * provided name does not exist
+     * provided name does not exist.
      *
-     * @param  string $name Name of the requested Logger instance
+     * @param string|null $name Name of the requested Logger instance
      *
      * @return Logger Requested instance of Logger or new instance
      */
-    public static function getLogger($name)
+    public static function getLogger(?string $name) : Logger
     {
         return Registry::hasLogger($name) ? Registry::getInstance($name) : self::createLogger($name);
     }
 
     /**
-     * Alias of getLogger
+     * Alias of getLogger.
+     *
      * @see getLogger
      *
-     * @param  string $name Name of the requested Logger instance
+     * @param string $name Name of the requested Logger instance
      *
      * @return Logger Requested instance of Logger or new instance
      */
-    public static function logger($name)
+    public static function logger(string $name) : Logger
     {
         return self::getLogger($name);
     }
 
     /**
-     * Return the config options
+     * Checks if a logger with given name already exists.
+     *
+     * @param string $name Name of the requested Logger instance
+     *
+     * @return bool true - Logger already exists; false - Logger does not exist
+     */
+    public static function hasLogger(string $name) : bool
+    {
+        return Registry::hasLogger($name);
+    }
+
+    /**
+     * Return the config options.
      *
      * @return Config Array with configuration options
      */
-    public static function getConfig()
+    public static function getConfig() : Config
     {
         return self::$config;
     }
@@ -102,7 +118,7 @@ class Cascade
      *
      * @param string|array $resource Path to config file or configuration as string or array
      */
-    public static function fileConfig($resource)
+    public static function fileConfig(string|array $resource) : void
     {
         self::$config = new Config($resource, new ConfigLoader());
         self::$config->load();
@@ -111,22 +127,24 @@ class Cascade
 
     /**
      * Load configuration options from a JSON or Yaml string. Alias of fileConfig.
+     *
      * @see fileConfig
      *
      * @param string $configString Configuration in string form
      */
-    public static function loadConfigFromString($configString)
+    public static function loadConfigFromString(string $configString) : void
     {
         self::fileConfig($configString);
     }
 
     /**
      * Load configuration options from an array. Alias of fileConfig.
+     *
      * @see fileConfig
      *
      * @param array $configArray Configuration in array form
      */
-    public static function loadConfigFromArray($configArray)
+    public static function loadConfigFromArray(array $configArray) : void
     {
         self::fileConfig($configArray);
     }

@@ -8,16 +8,17 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Cascade\Config\Loader\ClassLoader;
 
-use Monolog;
-
 use Cascade\Config\Loader\ClassLoader;
+use Monolog;
 
 /**
  * Formatter Loader. Loads the Formatter options, validate them and instantiates
  * a Formatter object (implementing Monolog\Formatter\FormatterInterface) with all
- * the corresponding options
+ * the corresponding options.
+ *
  * @see ClassLoader
  *
  * @author Raphael Antonmattei <rantonmattei@theorchard.com>
@@ -25,12 +26,13 @@ use Cascade\Config\Loader\ClassLoader;
 class FormatterLoader extends ClassLoader
 {
     /**
-     * Default formatter class to use if none is provided in the option array
+     * Default formatter class to use if none is provided in the option array.
      */
-    const DEFAULT_CLASS = 'Monolog\Formatter\LineFormatter';
+    public const DEFAULT_CLASS = 'Monolog\Formatter\LineFormatter';
 
     /**
-     * Constructor
+     * Constructor.
+     *
      * @see ClassLoader::__construct
      * @see Monolog\Formatter classes for formatter options
      *
@@ -61,12 +63,12 @@ class FormatterLoader extends ClassLoader
      */
     public static function initExtraOptionsHandlers()
     {
-        self::$extraOptionHandlers = array(
-            'Monolog\Formatter\LineFormatter' => array(
+        self::$extraOptionHandlers = [
+            'Monolog\Formatter\LineFormatter' => [
                 'includeStacktraces' => function (Monolog\Formatter\LineFormatter $instance, $include) {
                     $instance->includeStacktraces($include);
-                }
-            )
-        );
+                },
+            ],
+        ];
     }
 }

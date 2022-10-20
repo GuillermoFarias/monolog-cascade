@@ -5,6 +5,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Cascade\Config\Loader\FileLoader;
 
 /**
@@ -15,17 +16,17 @@ namespace Cascade\Config\Loader\FileLoader;
 class PhpArray extends FileLoaderAbstract
 {
     /**
-     * Valid file extensions for this loader
+     * Valid file extensions for this loader.
      *
      * @var array
      */
-    public static $validExtensions = array('php');
+    public static $validExtensions = ['php'];
 
     /**
-     * Load a PHP file
+     * Load a PHP file.
      *
-     * @param  string $resource File path to a PHP file that returns an array
-     * @param  string|null $type This is not used
+     * @param string      $resource File path to a PHP file that returns an array
+     * @param string|null $type     This is not used
      *
      * @return array Array containing data from the PHP file
      */
@@ -34,9 +35,7 @@ class PhpArray extends FileLoaderAbstract
         $config = include $resource;
 
         if (!is_array($config)) {
-            throw new \InvalidArgumentException(
-                sprintf('The file "%s" did not return a valid PHP array when included', $resource)
-            );
+            throw new \InvalidArgumentException(sprintf('The file "%s" did not return a valid PHP array when included', $resource));
         }
 
         return $config;
@@ -47,10 +46,10 @@ class PhpArray extends FileLoaderAbstract
      * /!\ This does not verify that the php file returns a valid array. An exception
      * will be thrown when it is loaded if that is not the case.
      *
-     * @param  string $resource Filepath
-     * @param  string $type Not used
+     * @param string $resource Filepath
+     * @param string $type     Not used
      *
-     * @return boolean Whether or not the passed in resource is supported by this loader
+     * @return bool Whether or not the passed in resource is supported by this loader
      */
     public function supports($resource, $type = null)
     {

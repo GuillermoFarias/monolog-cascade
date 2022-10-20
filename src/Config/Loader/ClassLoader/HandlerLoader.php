@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Monolog Cascade package.
  *
@@ -8,18 +9,20 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Cascade\Config\Loader\ClassLoader;
 
-use Monolog\Formatter\FormatterInterface;
-use Monolog\Handler\HandlerInterface;
-use Monolog\Handler\LogglyHandler;
-
 use Cascade\Config\Loader\ClassLoader;
+use Monolog\Formatter\FormatterInterface;
+use Monolog\Handler\FormattableHandlerInterface;
+use Monolog\Handler\LogglyHandler;
+use Monolog\Handler\ProcessableHandlerInterface;
 
 /**
  * Handler Loader. Loads the Handler options, validate them and instantiates
  * a Handler object (implementing Monolog\Handler\HandlerInterface) with all
- * the corresponding options
+ * the corresponding options.
+ *
  * @see ClassLoader
  *
  * @author Raphael Antonmattei <rantonmattei@theorchard.com>
@@ -27,25 +30,26 @@ use Cascade\Config\Loader\ClassLoader;
 class HandlerLoader extends ClassLoader
 {
     /**
-     * Default handler class to use if none is provided in the option array
+     * Default handler class to use if none is provided in the option array.
      */
-    const DEFAULT_CLASS = 'Monolog\Handler\StreamHandler';
+    public const DEFAULT_CLASS = 'Monolog\Handler\StreamHandler';
 
     /**
-     * Constructor
+     * Constructor.
+     *
      * @see ClassLoader::__construct
      * @see \Monolog\Handler classes for handler options
      *
-     * @param array $handlerOptions Handler options
-     * @param FormatterInterface[] $formatters Array of formatter to pick from
-     * @param callable[] $processors Array of processors to pick from
-     * @param callable[] $handlers Array of handlers to pick from
+     * @param array                $handlerOptions Handler options
+     * @param FormatterInterface[] $formatters     Array of formatter to pick from
+     * @param callable[]           $processors     Array of processors to pick from
+     * @param callable[]           $handlers       Array of handlers to pick from
      */
     public function __construct(
         array &$handlerOptions,
-        array $formatters = array(),
-        array $processors = array(),
-        array $handlers = array()
+        array $formatters = [],
+        array $processors = [],
+        array $handlers = []
     ) {
         $this->populateFormatters($handlerOptions, $formatters);
         $this->populateProcessors($handlerOptions, $processors);
@@ -62,10 +66,10 @@ class HandlerLoader extends ClassLoader
      * If no formatter is specified in the options, Monolog will use its default formatter for the
      * handler
      *
-     * @throws \InvalidArgumentException
+     * @param array                &$handlerOptions Handler options
+     * @param FormatterInterface[] $formatters      Array of formatter to pick from
      *
-     * @param  array &$handlerOptions Handler options
-     * @param  FormatterInterface[] $formatters Array of formatter to pick from
+     * @throws \InvalidArgumentException
      */
     private function populateFormatters(array &$handlerOptions, array $formatters)
     {
@@ -73,12 +77,7 @@ class HandlerLoader extends ClassLoader
             if (isset($formatters[$handlerOptions['formatter']])) {
                 $handlerOptions['formatter'] = $formatters[$handlerOptions['formatter']];
             } else {
-                throw new \InvalidArgumentException(
-                    sprintf(
-                        'Formatter %s not found in the configured formatters',
-                        $handlerOptions['formatter']
-                    )
-                );
+                throw new \InvalidArgumentException(sprintf('Formatter %s not found in the configured formatters', $handlerOptions['formatter']));
             }
         }
     }
@@ -87,26 +86,21 @@ class HandlerLoader extends ClassLoader
      * Replace the processors in the option array with the corresponding callable from the
      * array of loaded and callable processors, if it exists.
      *
-     * @throws \InvalidArgumentException
+     * @param array      &$handlerOptions Handler options
+     * @param callable[] $processors      Array of processors to pick from
      *
-     * @param  array &$handlerOptions Handler options
-     * @param  callable[] $processors Array of processors to pick from
+     * @throws \InvalidArgumentException
      */
     private function populateProcessors(array &$handlerOptions, array $processors)
     {
-        $processorArray = array();
+        $processorArray = [];
 
         if (isset($handlerOptions['processors'])) {
             foreach ($handlerOptions['processors'] as $processorId) {
                 if (isset($processors[$processorId])) {
                     $processorArray[] = $processors[$processorId];
                 } else {
-                    throw new \InvalidArgumentException(
-                        sprintf(
-                            'Cannot add processor "%s" to the handler. Processor not found.',
-                            $processorId
-                        )
-                    );
+                    throw new \InvalidArgumentException(sprintf('Cannot add processor "%s" to the handler. Processor not found.', $processorId));
                 }
             }
 
@@ -114,30 +108,25 @@ class HandlerLoader extends ClassLoader
         }
     }
 
-     /**
+    /**
      * Replace the handler or handlers in the option array with the corresponding callable(s) from the
      * array of loaded and callable handlers, if they exist.
      *
-     * @throws \InvalidArgumentException
+     * @param array      &$handlerOptions Handler options
+     * @param callable[] $handlers        Array of handlers to pick from
      *
-     * @param  array &$handlerOptions Handler options
-     * @param  callable[] $handlers Array of handlers to pick from
+     * @throws \InvalidArgumentException
      */
     private function populateHandlers(array &$handlerOptions, array $handlers)
     {
-        $handlerArray = array();
+        $handlerArray = [];
 
         if (isset($handlerOptions['handlers'])) {
             foreach ($handlerOptions['handlers'] as $handlerId) {
                 if (isset($handlers[$handlerId])) {
                     $handlerArray[] = $handlers[$handlerId];
                 } else {
-                    throw new \InvalidArgumentException(
-                        sprintf(
-                            'Cannot add handler "%s" to the handler. Handler not found.',
-                            $handlerId
-                        )
-                    );
+                    throw new \InvalidArgumentException(sprintf('Cannot add handler "%s" to the handler. Handler not found.', $handlerId));
                 }
             }
 
@@ -150,12 +139,7 @@ class HandlerLoader extends ClassLoader
             if (isset($handlers[$handlerId])) {
                 $handlerOptions['handler'] = $handlers[$handlerId];
             } else {
-                 throw new \InvalidArgumentException(
-                     sprintf(
-                         'Cannot add handler "%s" to the handler. Handler not found.',
-                         $handlerId
-                     )
-                 );
+                throw new \InvalidArgumentException(sprintf('Cannot add handler "%s" to the handler. Handler not found.', $handlerId));
             }
         }
     }
@@ -176,23 +160,23 @@ class HandlerLoader extends ClassLoader
      */
     public static function initExtraOptionsHandlers()
     {
-        self::$extraOptionHandlers = array(
-            '*' => array(
-                'formatter' => function (HandlerInterface $instance, FormatterInterface $formatter) {
+        self::$extraOptionHandlers = [
+            '*' => [
+                'formatter' => function (FormattableHandlerInterface $instance, FormatterInterface $formatter) {
                     $instance->setFormatter($formatter);
                 },
-                'processors' => function (HandlerInterface $instance, array $processors) {
+                'processors' => function (ProcessableHandlerInterface $instance, array $processors) {
                     // We need to reverse the array because Monolog "pushes" processors to top of the stack
                     foreach (array_reverse($processors) as $processor) {
                         $instance->pushProcessor($processor);
                     }
-                }
-            ),
-            'Monolog\Handler\LogglyHandler' => array(
+                },
+            ],
+            'Monolog\Handler\LogglyHandler' => [
                 'tags' => function (LogglyHandler $instance, $tags) {
                     $instance->setTag($tags);
-                }
-            )
-        );
+                },
+            ],
+        ];
     }
 }

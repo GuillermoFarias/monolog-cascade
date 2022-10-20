@@ -8,70 +8,77 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Cascade;
 
-use Monolog;
+namespace Cascade;
 
 use Cascade\Config\ConfigLoader;
 use Cascade\Config\Loader\ClassLoader\FormatterLoader;
 use Cascade\Config\Loader\ClassLoader\HandlerLoader;
 use Cascade\Config\Loader\ClassLoader\LoggerLoader;
 use Cascade\Config\Loader\ClassLoader\ProcessorLoader;
+use Monolog;
 
 /**
  * Config class that takes a config resource (file, JSON, Yaml, etc.) and configure Loggers with
- * all the required options (Formatters, Handlers, etc.)
+ * all the required options (Formatters, Handlers, etc.).
  *
  * @author Raphael Antonmattei <rantonmattei@theorchard.com>
  */
 class Config
 {
     /**
-     * Input from user. This is either a file path, a string or an array
-     * @var string|array
+     * Input from user. This is either a file path, a string or an array.
+     *
+     * @var string[]
      */
     protected $input = null;
 
     /**
-     * Array of logger configuration options: (logger attributes, formatters, handlers, etc.)
+     * Array of logger configuration options: (logger attributes, formatters, handlers, etc.).
+     *
      * @var array
      */
-    protected $options = array();
+    protected $options = [];
 
     /**
-     * Array of Formatter objects
+     * Array of Formatter objects.
+     *
      * @var Monolog\Formatter\FormatterInterface[]
      */
-    protected $formatters = array();
+    protected $formatters = [];
 
     /**
-     * Array of Handler objects
+     * Array of Handler objects.
+     *
      * @var Monolog\Handler\HandlerInterface[]
      */
-    protected $handlers = array();
+    protected $handlers = [];
 
     /**
-     * Array of Processor objects
+     * Array of Processor objects.
+     *
      * @var callable[]
      */
-    protected $processors = array();
+    protected $processors = [];
 
     /**
-     * Array of logger objects
+     * Array of logger objects.
+     *
      * @var Monolog\Logger[]
      */
-    protected $loggers = array();
+    protected $loggers = [];
 
     /**
-     * Config loader
+     * Config loader.
+     *
      * @var ConfigLoader
      */
     protected $loader = null;
 
     /**
-     * Instantiate a Config object
+     * Instantiate a Config object.
      *
-     * @param string|array $input User input
+     * @param string|array $input  User input
      * @param ConfigLoader $loader Config loader object
      */
     public function __construct($input, ConfigLoader $loader)
@@ -81,7 +88,7 @@ class Config
     }
 
     /**
-     * Load config options into the options array using the injected loader
+     * Load config options into the options array using the injected loader.
      */
     public function load()
     {
@@ -89,7 +96,7 @@ class Config
     }
 
     /**
-     * Configure and register Logger(s) according to the options passed in
+     * Configure and register Logger(s) according to the options passed in.
      */
     public function configure()
     {
@@ -117,18 +124,16 @@ class Config
         if (isset($this->options['loggers'])) {
             $this->configureLoggers($this->options['loggers']);
         } else {
-            throw new \RuntimeException(
-                'Cannot configure loggers. No logger configuration options provided.'
-            );
+            throw new \RuntimeException('Cannot configure loggers. No logger configuration options provided.');
         }
     }
 
     /**
-     * Configure the formatters
+     * Configure the formatters.
      *
-     * @param  array $formatters Array of formatter options
+     * @param array $formatters Array of formatter options
      */
-    protected function configureFormatters(array $formatters = array())
+    protected function configureFormatters(array $formatters = [])
     {
         foreach ($formatters as $formatterId => $formatterOptions) {
             $formatterLoader = new FormatterLoader($formatterOptions);
@@ -137,9 +142,9 @@ class Config
     }
 
     /**
-     * Configure the handlers
+     * Configure the handlers.
      *
-     * @param  array $handlers Array of handler options
+     * @param array $handlers Array of handler options
      */
     protected function configureHandlers(array $handlers)
     {
@@ -150,22 +155,22 @@ class Config
     }
 
     /**
-     * Configure the processors
+     * Configure the processors.
      *
-     * @param  array $processors Array of processor options
+     * @param array $processors Array of processor options
      */
     protected function configureProcessors(array $processors)
     {
         foreach ($processors as $processorName => $processorOptions) {
-            $processorLoader = new ProcessorLoader($processorOptions, $this->processors);
+            $processorLoader = new ProcessorLoader($processorOptions);
             $this->processors[$processorName] = $processorLoader->load();
         }
     }
 
     /**
-     * Configure the loggers
+     * Configure the loggers.
      *
-     * @param  array $loggers Array of logger options
+     * @param array $loggers Array of logger options
      */
     protected function configureLoggers(array $loggers)
     {

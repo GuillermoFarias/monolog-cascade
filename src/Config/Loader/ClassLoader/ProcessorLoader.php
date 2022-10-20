@@ -8,16 +8,17 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Cascade\Config\Loader\ClassLoader;
 
 use Cascade\Config\Loader\ClassLoader;
-
 use Monolog;
 
 /**
  * Processor Loader. Loads the Processor options, validate them and instantiates
  * a Processor object (implementing Monolog\Processor\ProcessorInterface) with all
- * the corresponding options
+ * the corresponding options.
+ *
  * @see ClassLoader
  *
  * @author Kate Burdon <kburdon@tableau.com>
@@ -26,14 +27,14 @@ use Monolog;
 class ProcessorLoader extends ClassLoader
 {
     /**
-     * Constructor
+     * Constructor.
+     *
      * @see ClassLoader::__construct
      * @see Monolog\Handler classes for handler options
      *
-     * @param array $processorOptions Processor options
-     * @param Monolog\Processor\ProcessorInterface[] $processors Array of processors to pick from
+     * @param Monolog\Processor\ProcessorInterface[] $processorOptions Array of processors to pick from
      */
-    public function __construct(array &$processorOptions, array $processors = array())
+    public function __construct(array &$processorOptions)
     {
         parent::__construct($processorOptions);
 
