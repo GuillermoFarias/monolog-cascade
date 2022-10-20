@@ -8,6 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Cascade\Tests\Config;
 
 use Cascade\Config\ConfigLoader;
@@ -15,25 +16,26 @@ use Cascade\Tests\Fixtures;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Class ConfigLoaderTest
+ * Class ConfigLoaderTest.
  *
  * @author Raphael Antonmattei <rantonmattei@theorchard.com>
  */
 class ConfigLoaderTest extends TestCase
 {
     /**
-     * Loader to test against
+     * Loader to test against.
+     *
      * @var ConfigLoader
      */
     protected $loader = null;
 
-    public function setUp()
+    public function setUp() : void
     {
         parent::setup();
         $this->loader = new ConfigLoader();
     }
 
-    public function tearDown()
+    public function tearDown() : void
     {
         $this->loader = null;
         parent::tearDown();

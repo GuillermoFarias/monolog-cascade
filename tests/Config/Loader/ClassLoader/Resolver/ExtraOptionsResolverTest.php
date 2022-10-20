@@ -8,40 +8,41 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Cascade\Tests\Config\Loader\ClassLoader\Resolver;
 
 use Cascade\Config\Loader\ClassLoader\Resolver\ExtraOptionsResolver;
-
-use Symfony;
 use PHPUnit\Framework\TestCase;
-use Cascade\Tests\Fixtures\SampleClass;
+use Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException;
 
 /**
- * Class ExtraOptionsResolverTest
+ * Class ExtraOptionsResolverTest.
  *
  * @author Raphael Antonmattei <rantonmattei@theorchard.com>
  */
 class ExtraOptionsResolverTest extends TestCase
 {
     /**
-     * Reflection class for which you want to resolve extra options
+     * Reflection class for which you want to resolve extra options.
+     *
      * @var \ReflectionClass
      */
     protected $reflected = null;
 
     /**
-     * ExtraOptions Resolver
+     * ExtraOptions Resolver.
+     *
      * @var ExtraOptionsResolver
      */
     protected $resolver = null;
 
     /**
-     * Set up function
+     * Set up function.
      */
-    public function setUp()
+    public function setUp() : void
     {
         $this->class = 'Cascade\Tests\Fixtures\SampleClass';
-        $this->params = array('optionalA', 'optionalB');
+        $this->params = ['optionalA', 'optionalB'];
         $this->resolver = new ExtraOptionsResolver(
             new \ReflectionClass($this->class),
             $this->params
@@ -50,9 +51,9 @@ class ExtraOptionsResolverTest extends TestCase
     }
 
     /**
-     * Tear down function
+     * Tear down function.
      */
-    public function tearDown()
+    public function tearDown() : void
     {
         $this->resolver = null;
         $this->class = null;
@@ -60,12 +61,12 @@ class ExtraOptionsResolverTest extends TestCase
     }
 
     /**
-     * Test the hsah key generation
+     * Test the hsah key generation.
      */
     public function testGenerateParamsHashKey()
     {
-        $a = array('optionA', 'optionB', 'optionC');
-        $b = array('optionA', 'optionB', 'optionC');
+        $a = ['optionA', 'optionB', 'optionC'];
+        $b = ['optionA', 'optionB', 'optionC'];
 
         $this->assertEquals(
             ExtraOptionsResolver::generateParamsHashKey($a),
@@ -74,7 +75,7 @@ class ExtraOptionsResolverTest extends TestCase
     }
 
     /**
-     * Test the resolver contructor
+     * Test the resolver contructor.
      */
     public function testConstructor()
     {
@@ -83,21 +84,21 @@ class ExtraOptionsResolverTest extends TestCase
     }
 
     /**
-     * Test resolving with valid options
+     * Test resolving with valid options.
      */
     public function testResolve()
     {
         $this->assertEquals(
-            array_combine($this->params, array('hello', 'there')),
-            $this->resolver->resolve(array('optionalB' => 'there', 'optionalA' => 'hello'))
+            array_combine($this->params, ['hello', 'there']),
+            $this->resolver->resolve(['optionalB' => 'there', 'optionalA' => 'hello'])
         );
 
         // Resolve an empty array (edge case)
-        $this->assertEquals(array(), $this->resolver->resolve(array()));
+        $this->assertEquals([], $this->resolver->resolve([]));
     }
 
     /**
-     * Data provider for testResolveWithInvalidOptions
+     * Data provider for testResolveWithInvalidOptions.
      *
      * The order of the input options does not matter and is somewhat random. The resolution
      * should reconcile those options and match them up with the closure param position
@@ -106,23 +107,23 @@ class ExtraOptionsResolverTest extends TestCase
      */
     public function optionsProvider()
     {
-        return array(
-            array(
-                array('optionalA', 'optionalB', 'mandatory'),
+        return [
+            [
+                ['optionalA', 'optionalB', 'mandatory'],
                 $this->getMockBuilder('Cascade\Config\Loader\ClassLoader')
                     ->disableOriginalConstructor()
                     ->getMock()->method('canHandle')
-                    ->willReturn(true)
-            )
-        );
+                    ->willReturn(true),
+            ],
+        ];
     }
 
     /**
-     * Test resolving with valid options
+     * Test resolving with valid options.
      */
     public function testResolveWithCustomOptionHandler()
     {
-        $this->params = array('optionalA', 'optionalB', 'mandatory');
+        $this->params = ['optionalA', 'optionalB', 'mandatory'];
         $this->resolver = new ExtraOptionsResolver(
             new \ReflectionClass($this->class),
             $this->params
@@ -137,11 +138,11 @@ class ExtraOptionsResolverTest extends TestCase
             ->willReturn(true);
 
         // Resolve an empty array (edge case)
-        $this->assertEquals(array('mandatory' => 'abc'), $this->resolver->resolve(array('mandatory' => 'abc'), $stub));
+        $this->assertEquals(['mandatory' => 'abc'], $this->resolver->resolve(['mandatory' => 'abc'], $stub));
     }
 
     /**
-     * Data provider for testResolveWithInvalidOptions
+     * Data provider for testResolveWithInvalidOptions.
      *
      * The order of the input options does not matter and is somewhat random. The resolution
      * should reconcile those options and match them up with the closure param position
@@ -150,30 +151,32 @@ class ExtraOptionsResolverTest extends TestCase
      */
     public function invalidOptionsProvider()
     {
-        return array(
-            array(
-                array( // Some invalid
+        return [
+            [
+                [ // Some invalid
                     'optionalB' => 'there',
                     'optionalA' => 'hello',
-                    'additionalInvalid' => 'some unknow param'
-                ),
-                array( // All invalid
+                    'additionalInvalid' => 'some unknow param',
+                ],
+                [ // All invalid
                     'someInvalidOptionA' => 'abc',
-                    'someInvalidOptionB' => 'def'
-                )
-            )
-        );
+                    'someInvalidOptionB' => 'def',
+                ],
+            ],
+        ];
     }
 
     /**
      * Test resolving with invalid options. It should throw an exception.
      *
-     * @param  array $invalidOptions Array of invalid options
+     * @param array $invalidOptions Array of invalid options
+     *
      * @dataProvider invalidOptionsProvider
-     * @expectedException Symfony\Component\OptionsResolver\Exception\UndefinedOptionsException
      */
     public function testResolveWithInvalidOptions($invalidOptions)
     {
+        $this->expectException(UndefinedOptionsException::class);
+
         $this->resolver->resolve($invalidOptions);
     }
 }

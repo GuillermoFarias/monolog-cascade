@@ -8,43 +8,46 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Cascade\Tests\Config\Loader\ClassLoader;
 
 use Cascade\Config\Loader\ClassLoader\FormatterLoader;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Class FormatterLoaderTest
+ * Class FormatterLoaderTest.
  *
  * @author Raphael Antonmattei <rantonmattei@theorchard.com>
  */
 class FormatterLoaderTest extends TestCase
 {
     /**
-     * Set up function
+     * Set up function.
      */
-    public function setUp()
+    public function setUp() : void
     {
         parent::setUp();
-        new FormatterLoader(array());
+        new FormatterLoader([]);
     }
 
     /**
-     * Tear down function
+     * Tear down function.
      */
-    public function tearDown()
+    public function tearDown() : void
     {
-        FormatterLoader::$extraOptionHandlers = array();
+        FormatterLoader::$extraOptionHandlers = [];
         parent::tearDown();
     }
 
     /**
      * Check if the handler exists for a given class and option
-     * Also checks that it a callable and return it
+     * Also checks that it a callable and return it.
      *
-     * @param  string $class Class name the handler applies to
-     * @param  string $optionName Option name
+     * @param string $class      Class name the handler applies to
+     * @param string $optionName Option name
+     *
      * @return \Closure Closure
+     *
      * @throws \Exception
      */
     private function getHandler($class, $optionName)
@@ -57,30 +60,24 @@ class FormatterLoaderTest extends TestCase
 
             return $closure;
         } else {
-            throw new \Exception(
-                sprintf(
-                    'Handler %s is not defined for class %s',
-                    $optionName,
-                    $class
-                )
-            );
+            throw new \Exception(sprintf('Handler %s is not defined for class %s', $optionName, $class));
         }
     }
 
     /**
      * Tests that calling the given Closure will trigger a method call with the given param
-     * in the given class
+     * in the given class.
      *
-     * @param  string $class Class name
-     * @param  string $methodName Method name
-     * @param  mixed $methodArg Parameter passed to the closure
-     * @param  \Closure $closure Closure to call
+     * @param string   $class      Class name
+     * @param string   $methodName Method name
+     * @param mixed    $methodArg  Parameter passed to the closure
+     * @param \Closure $closure    Closure to call
      */
     private function doTestMethodCalledInHandler($class, $methodName, $methodArg, \Closure $closure)
     {
         // Setup mock and expectations
         $mock = $this->getMockBuilder($class)
-            ->setMethods(array($methodName))
+            ->setMethods([$methodName])
             ->getMock();
 
         $mock->expects($this->once())
@@ -91,9 +88,8 @@ class FormatterLoaderTest extends TestCase
         $closure($mock, $methodArg);
     }
 
-
     /**
-     * Test that handlers exist
+     * Test that handlers exist.
      */
     public function testHandlersExist()
     {
@@ -103,30 +99,32 @@ class FormatterLoaderTest extends TestCase
     /**
      * Data provider for testHandlers
      * /!\ Important note: just add values to this array if you need to test a newly added handler
-     * If one of your handlers calls more than one method you can add more than one entries
+     * If one of your handlers calls more than one method you can add more than one entries.
      *
      * @return array of array of args for testHandlers
      */
     public function handlerParamsProvider()
     {
-        return array(
-            array(
+        return [
+            [
                 'Monolog\Formatter\LineFormatter',   // Class name
                 'includeStacktraces',                // Option name
                 true,                                // Option test value
-                'includeStacktraces'                 // Name of the method called by your handler
-            )
-        );
+                'includeStacktraces',                 // Name of the method called by your handler
+            ],
+        ];
     }
 
     /**
-     * Test the extra option handlers
+     * Test the extra option handlers.
+     *
      * @see doTestMethodCalledInHandler
      *
-     * @param  string $class Class name
-     * @param  string $optionName Option name
-     * @param  mixed $optionValue Option value
-     * @param  string $calledMethodName Expected called method name
+     * @param string $class            Class name
+     * @param string $optionName       Option name
+     * @param mixed  $optionValue      Option value
+     * @param string $calledMethodName Expected called method name
+     *
      * @dataProvider handlerParamsProvider
      */
     public function testHandlers($class, $optionName, $optionValue, $calledMethodName)

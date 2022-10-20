@@ -8,22 +8,22 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Cascade\Tests;
 
+use Cascade\Cascade;
 use Monolog\Logger;
 use Monolog\Registry;
 use PHPUnit\Framework\TestCase;
 
-use Cascade\Cascade;
-
 /**
- * Class CascadeTest
+ * Class CascadeTest.
  *
  * @author Raphael Antonmattei <rantonmattei@theorchard.com>
  */
 class CascadeTest extends TestCase
 {
-    public function teardown()
+    public function teardown() : void
     {
         Registry::clear();
         parent::teardown();
@@ -48,11 +48,10 @@ class CascadeTest extends TestCase
         $this->assertSame($logger, $logger2);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testRegistryWithInvalidName()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         Cascade::getLogger(null);
     }
 
@@ -82,5 +81,13 @@ class CascadeTest extends TestCase
         $yamlConfig = Fixtures::getYamlConfig();
         Cascade::loadConfigFromString($yamlConfig);
         $this->assertInstanceOf('Cascade\Config', Cascade::getConfig());
+    }
+
+    public function testHasLogger()
+    {
+        // implicitly create logger "existing"
+        Cascade::logger('existing');
+        $this->assertFalse(Cascade::hasLogger('not_existing'));
+        $this->assertTrue(Cascade::hasLogger('existing'));
     }
 }

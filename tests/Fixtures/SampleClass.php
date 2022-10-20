@@ -8,63 +8,71 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Cascade\Tests\Fixtures;
 
 /**
- * Class SampleClass
+ * Class SampleClass.
  *
  * @author Raphael Antonmattei <rantonmattei@theorchard.com>
  */
 class SampleClass
 {
     /**
-     * Some mandatory member
+     * Some mandatory member.
+     *
      * @var mixed
      */
     private $mandatory;
 
     /**
-     * Optional member A
+     * Optional member A.
+     *
      * @var mixed
      */
     private $optionalA;
 
     /**
-     * Optional member A
+     * Optional member A.
+     *
      * @var mixed
      */
     public $optionalB;
 
     /**
-     * Optional member X
+     * Optional member X.
+     *
      * @var mixed
      */
     private $optionalX;
 
     /**
-     * Optional member Y
+     * Optional member Y.
+     *
      * @var mixed
      */
     public $optionalY;
 
     /**
-     * Hello member
+     * Hello member.
+     *
      * @var mixed
      */
     private $hello;
 
     /**
-     * There member
+     * There member.
+     *
      * @var mixed
      */
     private $there;
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param mixed $mandatory Some mandatory param
-     * @param string $optionalA Some optional param
-     * @param string $optionalB Some other optional param
+     * @param mixed  $mandatory      Some mandatory param
+     * @param string $optionalA      Some optional param
+     * @param string $optionalB      Some other optional param
      * @param string $optional_snake Some optional snake param
      */
     public function __construct(
@@ -77,7 +85,7 @@ class SampleClass
     }
 
     /**
-     * Set the mandatory property
+     * Set the mandatory property.
      *
      * @param mixed $mandatory Some value
      */
@@ -87,9 +95,9 @@ class SampleClass
     }
 
     /**
-     * Function that sets the optionalA member
+     * Function that sets the optionalA member.
      *
-     * @param  mixed $value Some value
+     * @param mixed $value Some value
      */
     public function optionalA($value)
     {
@@ -97,9 +105,9 @@ class SampleClass
     }
 
     /**
-     * Function that sets the optionalX member
+     * Function that sets the optionalX member.
      *
-     * @param  mixed $value Some value
+     * @param mixed $value Some value
      */
     public function optionalX($value)
     {
@@ -107,9 +115,9 @@ class SampleClass
     }
 
     /**
-     * Function that sets the hello member
+     * Function that sets the hello member.
      *
-     * @param  mixed $value Some value
+     * @param mixed $value Some value
      */
     public function setHello($value)
     {
@@ -117,9 +125,9 @@ class SampleClass
     }
 
     /**
-     * Function that sets the there member
+     * Function that sets the there member.
      *
-     * @param  mixed $value Some value
+     * @param mixed $value Some value
      */
     public function setThere($value)
     {

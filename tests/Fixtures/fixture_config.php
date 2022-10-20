@@ -8,61 +8,61 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-return array(
+return [
     'version' => 1,
 
-    'formatters' => array(
-        'spaced' => array(
+    'formatters' => [
+        'spaced' => [
             'format' => "%datetime% %channel%.%level_name%  %message%\n",
-            'include_stacktraces' => true
-        ),
-        'dashed' => array(
-            'format' => "%datetime%-%channel%.%level_name% - %message%\n"
-        ),
-    ),
-    'handlers' => array(
-        'console' => array(
+            'include_stacktraces' => true,
+        ],
+        'dashed' => [
+            'format' => "%datetime%-%channel%.%level_name% - %message%\n",
+        ],
+    ],
+    'handlers' => [
+        'console' => [
             'class' => 'Monolog\Handler\StreamHandler',
             'level' => 'DEBUG',
             'formatter' => 'spaced',
-            'stream' => 'php://stdout'
-        ),
+            'stream' => 'php://stdout',
+        ],
 
-        'info_file_handler' => array(
+        'info_file_handler' => [
             'class' => 'Monolog\Handler\StreamHandler',
             'level' => 'INFO',
             'formatter' => 'dashed',
-            'stream' => './demo_info.log'
-        ),
+            'stream' => './demo_info.log',
+        ],
 
-        'error_file_handler' => array(
+        'error_file_handler' => [
             'class' => 'Monolog\Handler\StreamHandler',
             'level' => 'ERROR',
             'stream' => './demo_error.log',
-            'formatter' => 'spaced'
-        ),
+            'formatter' => 'spaced',
+        ],
 
-        'group_handler' => array(
+        'group_handler' => [
             'class' => 'Monolog\Handler\GroupHandler',
-            'handlers' => array(
+            'handlers' => [
                 'console',
                 'info_file_handler',
-            ),
-        ),
+            ],
+        ],
 
-        'fingers_crossed_handler' => array(
+        'fingers_crossed_handler' => [
             'class' => 'Monolog\Handler\FingersCrossedHandler',
             'handler' => 'group_handler',
-        ),
-    ),
-    'processors' => array(
-        'tag_processor' => array(
-            'class' => 'Monolog\Processor\TagProcessor'
-        )
-    ),
-    'loggers' => array(
-        'my_logger' => array(
-            'handlers' => array('console', 'info_file_handler')
-        )
-    )
-);
+        ],
+    ],
+    'processors' => [
+        'tag_processor' => [
+            'class' => 'Monolog\Processor\TagProcessor',
+        ],
+    ],
+    'loggers' => [
+        'my_logger' => [
+            'handlers' => ['console', 'info_file_handler'],
+        ],
+    ],
+];

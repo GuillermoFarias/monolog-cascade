@@ -8,48 +8,50 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Cascade\Tests\Config\Loader\FileLoader;
 
 use Cascade\Tests\Fixtures;
+use PHPUnit\Framework\MockObject\MockBuilder;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Class JsonTest
+ * Class JsonTest.
  *
  * @author Raphael Antonmattei <rantonmattei@theorchard.com>
  */
 class JsonTest extends TestCase
 {
     /**
-     * JSON loader mock builder
-     * @var \PHPUnit_Framework_MockObject_MockBuilder
+     * JSON loader mock builder.
+     *
+     * @var MockBuilder
      */
     protected $jsonLoader = null;
 
-    public function setUp()
+    public function setUp() : void
     {
         parent::setUp();
 
-        $fileLocatorMock = $this->createMock(
-            'Symfony\Component\Config\FileLocatorInterface'
-        );
+        $fileLocatorMock = $this->getMockBuilder('Symfony\Component\Config\FileLocatorInterface')
+                                ->getMock();
 
         $this->jsonLoader = $this->getMockBuilder(
             'Cascade\Config\Loader\FileLoader\Json'
         )
-            ->setConstructorArgs(array($fileLocatorMock))
-            ->setMethods(array('readFrom', 'isFile', 'validateExtension'))
+            ->setConstructorArgs([$fileLocatorMock])
+            ->setMethods(['readFrom', 'isFile', 'validateExtension'])
             ->getMock();
     }
 
-    public function tearDown()
+    public function tearDown() : void
     {
         $this->jsonLoader = null;
         parent::tearDown();
     }
 
     /**
-     * Test loading a JSON string
+     * Test loading a JSON string.
      */
     public function testLoad()
     {
@@ -66,28 +68,29 @@ class JsonTest extends TestCase
     }
 
     /**
-     * Data provider for testSupportsWithInvalidResource
+     * Data provider for testSupportsWithInvalidResource.
      *
      * @return array array non-string values
      */
     public function notStringDataProvider()
     {
-        return array(
-            array(array()),
-            array(true),
-            array(123),
-            array(123.456),
-            array(null),
-            array(new \stdClass),
-            array(function () {
-            })
-        );
+        return [
+            [[]],
+            [true],
+            [123],
+            [123.456],
+            [null],
+            [new \stdClass()],
+            [function () {
+            }],
+        ];
     }
 
     /**
-     * Test loading resources supported by the JsonLoader
+     * Test loading resources supported by the JsonLoader.
      *
      * @param mixed $invalidResource Invalid resource value
+     *
      * @dataProvider notStringDataProvider
      */
     public function testSupportsWithInvalidResource($invalidResource)
@@ -96,7 +99,7 @@ class JsonTest extends TestCase
     }
 
     /**
-     * Test loading a JSON string
+     * Test loading a JSON string.
      */
     public function testSupportsWithJsonString()
     {
@@ -111,7 +114,7 @@ class JsonTest extends TestCase
 
     /**
      * Test loading a JSON file
-     * Note that this function tests isJson with a valid Json string
+     * Note that this function tests isJson with a valid Json string.
      */
     public function testSupportsWithJsonFile()
     {
@@ -130,7 +133,7 @@ class JsonTest extends TestCase
 
     /**
      * Test isJson method with invalid JSON string.
-     * Valid scenario is tested by the method above
+     * Valid scenario is tested by the method above.
      */
     public function testSupportsWithNonJsonString()
     {

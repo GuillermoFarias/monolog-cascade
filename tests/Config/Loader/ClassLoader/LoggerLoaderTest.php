@@ -8,26 +8,26 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Cascade\Tests\Config\Loader\ClassLoader;
 
+use Cascade\Config\Loader\ClassLoader\LoggerLoader;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
 use Monolog\Registry;
 use PHPUnit\Framework\TestCase;
 
-use Cascade\Config\Loader\ClassLoader\LoggerLoader;
-
 /**
- * Class LoggerLoaderTest
+ * Class LoggerLoaderTest.
  *
  * @author Raphael Antonmattei <rantonmattei@theorchard.com>
  */
 class LoggerLoaderTest extends TestCase
 {
     /**
-     * Tear down function
+     * Tear down function.
      */
-    public function tearDown()
+    public function tearDown() : void
     {
         parent::tearDown();
         Registry::clear();
@@ -42,13 +42,13 @@ class LoggerLoaderTest extends TestCase
 
     public function testResolveHandlers()
     {
-        $options = array(
-            'handlers' => array('test_handler_1', 'test_handler_2')
-        );
-        $handlers = array(
+        $options = [
+            'handlers' => ['test_handler_1', 'test_handler_2'],
+        ];
+        $handlers = [
             'test_handler_1' => new TestHandler(),
-            'test_handler_2' => new TestHandler()
-        );
+            'test_handler_2' => new TestHandler(),
+        ];
         $loader = new LoggerLoader('testLogger', $options, $handlers);
 
         $this->assertEquals(
@@ -57,18 +57,17 @@ class LoggerLoaderTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testResolveHandlersWithMismatch()
     {
-        $options = array(
-            'handlers' => array('unexisting_handler', 'test_handler_2')
-        );
-        $handlers = array(
+        $this->expectException(\InvalidArgumentException::class);
+
+        $options = [
+            'handlers' => ['unexisting_handler', 'test_handler_2'],
+        ];
+        $handlers = [
             'test_handler_1' => new TestHandler(),
-            'test_handler_2' => new TestHandler()
-        );
+            'test_handler_2' => new TestHandler(),
+        ];
         $loader = new LoggerLoader('testLogger', $options, $handlers);
 
         // This should throw an InvalidArgumentException
@@ -80,15 +79,15 @@ class LoggerLoaderTest extends TestCase
         $dummyClosure = function () {
             // Empty function
         };
-        $options = array(
-            'processors' => array('test_processor_1', 'test_processor_2')
-        );
-        $processors = array(
+        $options = [
+            'processors' => ['test_processor_1', 'test_processor_2'],
+        ];
+        $processors = [
             'test_processor_1' => $dummyClosure,
-            'test_processor_2' => $dummyClosure
-        );
+            'test_processor_2' => $dummyClosure,
+        ];
 
-        $loader = new LoggerLoader('testLogger', $options, array(), $processors);
+        $loader = new LoggerLoader('testLogger', $options, [], $processors);
 
         $this->assertEquals(
             array_values($processors),
@@ -96,23 +95,22 @@ class LoggerLoaderTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testResolveProcessorsWithMismatch()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $dummyClosure = function () {
             // Empty function
         };
-        $options = array(
-            'processors' => array('unexisting_processor', 'test_processor_2')
-        );
-        $processors = array(
+        $options = [
+            'processors' => ['unexisting_processor', 'test_processor_2'],
+        ];
+        $processors = [
             'test_processor_1' => $dummyClosure,
-            'test_processor_2' => $dummyClosure
-        );
+            'test_processor_2' => $dummyClosure,
+        ];
 
-        $loader = new LoggerLoader('testLogger', $options, array(), $processors);
+        $loader = new LoggerLoader('testLogger', $options, [], $processors);
 
         // This should throw an InvalidArgumentException
         $loader->resolveProcessors($options, $processors);
@@ -120,21 +118,21 @@ class LoggerLoaderTest extends TestCase
 
     public function testLoad()
     {
-        $options = array(
-            'handlers' => array('test_handler_1', 'test_handler_2'),
-            'processors' => array('test_processor_1', 'test_processor_2')
-        );
-        $handlers = array(
+        $options = [
+            'handlers' => ['test_handler_1', 'test_handler_2'],
+            'processors' => ['test_processor_1', 'test_processor_2'],
+        ];
+        $handlers = [
             'test_handler_1' => new TestHandler(),
-            'test_handler_2' => new TestHandler()
-        );
+            'test_handler_2' => new TestHandler(),
+        ];
         $dummyClosure = function () {
             // Empty function
         };
-        $processors = array(
+        $processors = [
             'test_processor_1' => $dummyClosure,
-            'test_processor_2' => $dummyClosure
-        );
+            'test_processor_2' => $dummyClosure,
+        ];
 
         $loader = new LoggerLoader('testLogger', $options, $handlers, $processors);
         $logger = $loader->load();

@@ -8,6 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Cascade\Tests\Config\Loader;
 
 use Cascade\Config\Loader\PhpArray as ArrayLoader;
@@ -15,33 +16,34 @@ use Cascade\Tests\Fixtures;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Class PhpArrayTest
+ * Class PhpArrayTest.
  *
  * @author Raphael Antonmattei <rantonmattei@theorchard.com>
  */
 class PhpArrayTest extends TestCase
 {
     /**
-     * Array loader object
+     * Array loader object.
+     *
      * @var ArrayLoader
      */
     protected $arrayLoader = null;
 
-    public function setUp()
+    public function setUp() : void
     {
         parent::setUp();
 
         $this->arrayLoader = new ArrayLoader();
     }
 
-    public function tearDown()
+    public function tearDown() : void
     {
         $this->arrayLoader = null;
         parent::tearDown();
     }
 
     /**
-     * Test loading a Php array
+     * Test loading a Php array.
      */
     public function testLoad()
     {
@@ -50,28 +52,29 @@ class PhpArrayTest extends TestCase
     }
 
     /**
-     * Data provider for testSupportsWithInvalidResource
+     * Data provider for testSupportsWithInvalidResource.
      *
      * @return array array of non-array values
      */
     public function notStringDataProvider()
     {
-        return array(
-            array('Some string'),
-            array(true),
-            array(123),
-            array(123.456),
-            array(null),
-            array(new \stdClass),
-            array(function () {
-            })
-        );
+        return [
+            ['Some string'],
+            [true],
+            [123],
+            [123.456],
+            [null],
+            [new \stdClass()],
+            [function () {
+            }],
+        ];
     }
 
     /**
-     * Test loading resources supported by the YamlLoader
+     * Test loading resources supported by the YamlLoader.
      *
      * @param mixed $invalidResource Invalid resource value
+     *
      * @dataProvider notStringDataProvider
      */
     public function testSupportsWithInvalidResource($invalidResource)
@@ -80,7 +83,7 @@ class PhpArrayTest extends TestCase
     }
 
     /**
-     * Test supports with a valid array
+     * Test supports with a valid array.
      */
     public function testSupports()
     {

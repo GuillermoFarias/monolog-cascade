@@ -8,10 +8,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Cascade\Tests\Fixtures;
 
 /**
- * Class DependentClass
+ * Class DependentClass.
  *
  * @author Raphael Antonmattei <rantonmattei@theorchard.com>
  * @author Dom Morgan <dom@d3r.com>
@@ -19,13 +20,14 @@ namespace Cascade\Tests\Fixtures;
 class DependentClass
 {
     /**
-     * An object dependency
+     * An object dependency.
+     *
      * @var SampleClass
      */
     private $dependency;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param SampleClass $dependency Some sample object
      */
@@ -35,7 +37,7 @@ class DependentClass
     }
 
     /**
-     * Set the object dependency
+     * Set the object dependency.
      *
      * @param SampleClass $dependency Some sample object
      */
