@@ -1,0 +1,7 @@
+parameters:
+    level: 5
+    paths:
+        - src
+    tmpDir: data/cache/phpstan
+    checkGenericClassInNonGenericObjectType: false
+    treatPhpDocTypesAsCertain: false
