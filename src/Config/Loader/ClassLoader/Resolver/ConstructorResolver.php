@@ -8,6 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Cascade\Config\Loader\ClassLoader\Resolver;
 
 use Cascade\Util;
@@ -15,35 +16,38 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Constructor Resolver. Pull args from the contructor and set up an option
- * resolver against args requirements
+ * resolver against args requirements.
  *
  * @author Raphael Antonmattei <rantonmattei@theorchard.com>
  */
 class ConstructorResolver
 {
     /**
-     * Reflection class for which you want to resolve constructor options
+     * Reflection class for which you want to resolve constructor options.
+     *
      * @var \ReflectionClass
      */
     protected $reflected = null;
 
     /**
-     * Registry of resolvers
+     * Registry of resolvers.
+     *
      * @var array
      */
-    private static $resolvers = array();
+    private static $resolvers = [];
 
     /**
-     * Associative array of contructor args to resolve against
+     * Associative array of contructor args to resolve against.
+     *
      * @var \ReflectionParameter[]
      */
-    protected $constructorArgs = array();
+    protected $constructorArgs = [];
 
     /**
-     * Contructor
+     * Contructor.
      *
      * @param \ReflectionClass $reflected Reflection class for which you want to resolve
-     * constructor options
+     *                                    constructor options
      */
     public function __construct(\ReflectionClass $reflected)
     {
@@ -53,7 +57,7 @@ class ConstructorResolver
 
     /**
      * Fetches constructor args (array of ReflectionParameter) from the reflected class
-     * and set them as an associative array
+     * and set them as an associative array.
      *
      * Convert the parameter names to camelCase for classes that have contructor
      * params defined in snake_case for consistency with the options
@@ -72,7 +76,7 @@ class ConstructorResolver
     }
 
     /**
-     * Returns the contructor args as an associative array
+     * Returns the contructor args as an associative array.
      *
      * @return array Contructor args
      */
@@ -82,7 +86,7 @@ class ConstructorResolver
     }
 
     /**
-     * Returns the reflected object
+     * Returns the reflected object.
      *
      * @return \ReflectionClass
      */
@@ -92,9 +96,9 @@ class ConstructorResolver
     }
 
     /**
-     * Configure options for the provided OptionResolver to match contructor args requirements
+     * Configure options for the provided OptionResolver to match contructor args requirements.
      *
-     * @param  OptionsResolver $optionsResolver OptionResolver to configure
+     * @param OptionsResolver $optionsResolver OptionResolver to configure
      */
     protected function configureOptions(OptionsResolver $optionsResolver)
     {
@@ -112,7 +116,7 @@ class ConstructorResolver
      * the option values passed in. We assume the passed in array has been resolved already.
      * i.e. That the arg name has an entry in the option array.
      *
-     * @param  array $hashOfOptions Array of options
+     * @param array $hashOfOptions Array of options
      *
      * @return array Array of ordered args
      */
@@ -128,13 +132,13 @@ class ConstructorResolver
     }
 
     /**
-     * Resolve options against constructor args
+     * Resolve options against constructor args.
      *
-     * @param  array $options Array of option values. Expected array looks like:
-     *     array(
-     *         'someParam' => 'def',
-     *         'someOtherParam' => 'sdsad'
-     *     )
+     * @param array $options Array of option values. Expected array looks like:
+     *                       array(
+     *                       'someParam' => 'def',
+     *                       'someOtherParam' => 'sdsad'
+     *                       )
      *
      * @return array Array of resolved ordered args
      */

@@ -8,63 +8,66 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Cascade\Config\Loader\ClassLoader\Resolver;
 
-use Symfony\Component\OptionsResolver\OptionsResolver;
-
 use Cascade\Config\Loader\ClassLoader;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Extra options resolver. Set up an option resolver for the passed in params and
- * apply validation rules if any
+ * apply validation rules if any.
  *
  * @author Raphael Antonmattei <rantonmattei@theorchard.com>
  */
 class ExtraOptionsResolver
 {
     /**
-     * Reflection class for which you want to resolve extra options
+     * Reflection class for which you want to resolve extra options.
+     *
      * @var \ReflectionClass
      */
     protected $reflected = null;
 
     /**
-     * Registry of resolvers
+     * Registry of resolvers.
+     *
      * @var OptionsResolver[]
      */
-    private static $resolvers = array();
+    private static $resolvers = [];
 
     /**
-     * Associative array of parameters to resolve against
+     * Associative array of parameters to resolve against.
+     *
      * @var array
      */
-    protected $params = array();
+    protected $params = [];
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param \ReflectionClass $reflected Reflection class for which you want to resolve
-     * extra options
-     * @param array $params Associative array of extra parameters we want to resolve against
+     *                                    extra options
+     * @param array            $params    Associative array of extra parameters we want to resolve against
      */
-    public function __construct(\ReflectionClass $reflected, array $params = array())
+    public function __construct(\ReflectionClass $reflected, array $params = [])
     {
         $this->reflected = $reflected;
         $this->setParams($params);
     }
 
     /**
-     * Set the parameters we want to resolve against
+     * Set the parameters we want to resolve against.
      *
      * @param array $params Associative array of extra parameters we want to resolve against
      */
-    public function setParams(array $params = array())
+    public function setParams(array $params = [])
     {
         $this->params = $params;
     }
 
     /**
-     * Get the parameters we want to resolve against
+     * Get the parameters we want to resolve against.
      *
      * @return array $params Associative array of parameters
      */
@@ -74,7 +77,7 @@ class ExtraOptionsResolver
     }
 
     /**
-     * Returns the reflected object
+     * Returns the reflected object.
      *
      * @return \ReflectionClass
      */
@@ -84,9 +87,9 @@ class ExtraOptionsResolver
     }
 
     /**
-     * Generate a unique hash based on the keys of the extra params
+     * Generate a unique hash based on the keys of the extra params.
      *
-     * @param  array $params: array of parameters
+     * @param array $params: array of parameters
      *
      * @return string Unique MD5 hash
      */
@@ -96,11 +99,11 @@ class ExtraOptionsResolver
     }
 
     /**
-     * Configure options for the provided OptionResolver to match extra params requirements
+     * Configure options for the provided OptionResolver to match extra params requirements.
      *
-     * @param  OptionsResolver $resolver OptionResolver to configure
-     * @param  ClassLoader|null $classLoader Optional class loader if you want to use custom
-     * handlers for some of the extra options
+     * @param OptionsResolver  $resolver    OptionResolver to configure
+     * @param ClassLoader|null $classLoader Optional class loader if you want to use custom
+     *                                      handlers for some of the extra options
      */
     protected function configureOptions(OptionsResolver $resolver, ClassLoader $classLoader = null)
     {
@@ -128,11 +131,11 @@ class ExtraOptionsResolver
     }
 
     /**
-     * Resolve options against extra params requirements
+     * Resolve options against extra params requirements.
      *
-     * @param  array $options Array of option values
-     * @param  ClassLoader|null $classLoader Optional class loader if you want to use custom
-     * handlers to resolve the extra options
+     * @param array            $options     Array of option values
+     * @param ClassLoader|null $classLoader Optional class loader if you want to use custom
+     *                                      handlers to resolve the extra options
      *
      * @return array Array of resolved options
      */

@@ -3,20 +3,18 @@
 namespace Cascade;
 
 /**
- * Class Util
- *
- * @package Cascade
+ * Class Util.
  */
 class Util
 {
-
     /**
      * Convert a string from snake_case to camelCase.
      *
      * If the input is not a string, null is returned.
      *
      * @param string $input Input snake_case string
-     * @return null|string Output camelCase string
+     *
+     * @return string|null Output camelCase string
      */
     public static function snakeToCamelCase($input)
     {

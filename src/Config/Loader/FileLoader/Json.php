@@ -8,10 +8,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Cascade\Config\Loader\FileLoader;
 
 /**
- * JSON loader class. It can load a JSON string or a Yaml file
+ * JSON loader class. It can load a JSON string or a Yaml file.
+ *
  * @see FileLoaderAbstract
  *
  * @author Raphael Antonmattei <rantonmattei@theorchard.com>
@@ -19,16 +21,17 @@ namespace Cascade\Config\Loader\FileLoader;
 class Json extends FileLoaderAbstract
 {
     /**
-     * Valid file extensions for this loader
+     * Valid file extensions for this loader.
+     *
      * @var array
      */
-    public static $validExtensions = array('json');
+    public static $validExtensions = ['json'];
 
     /**
-     * Load a JSON string/file
+     * Load a JSON string/file.
      *
-     * @param  string $resource JSON string or file path to a JSON file
-     * @param  string|null $type Not used.
+     * @param string      $resource JSON string or file path to a JSON file
+     * @param string|null $type     not used
      *
      * @return array Array containing data from the parsed JSON string or file
      */
@@ -43,25 +46,25 @@ class Json extends FileLoaderAbstract
      * json_decode (which is much more expensive). If the json is invalid, it will throw an
      * exception when we actually load it.
      *
-     * @param  string $string String to evaluate
+     * @param string $string String to evaluate
      *
-     * @return boolean Whether or not the passed string is meant to be a JSON string
+     * @return bool Whether or not the passed string is meant to be a JSON string
      */
     private function isJson($string)
     {
-        return (
+        return
             !empty($string) &&
             ($string[0] === '[' || $string[0] === '{')
-        );
+        ;
     }
 
     /**
-     * Return whether or not the passed in resource is supported by this loader
+     * Return whether or not the passed in resource is supported by this loader.
      *
-     * @param  string $resource Plain string or filepath
-     * @param  string $type Not used
+     * @param string $resource Plain string or filepath
+     * @param string $type     Not used
      *
-     * @return boolean Whether or not the passed in resource is supported by this loader
+     * @return bool Whether or not the passed in resource is supported by this loader
      */
     public function supports($resource, $type = null)
     {

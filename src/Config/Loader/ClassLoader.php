@@ -8,6 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Cascade\Config\Loader;
 
 use Cascade\Config\Loader\ClassLoader\Resolver\ConstructorResolver;
@@ -21,7 +22,7 @@ use Cascade\Util;
  *         'some_contruct_param' => 'abc',
  *         'some_param' => 'def',
  *         'some_other_param' => 'sdsad'
- *     )
+ *     ).
  *
  * Some of them are applicable to the constructor, other are applicable to other handlers.
  * For the latter you need to make sure there is a handler defined for that option
@@ -32,9 +33,9 @@ use Cascade\Util;
 class ClassLoader
 {
     /**
-     * Default class to use if none is provided in the option array
+     * Default class to use if none is provided in the option array.
      */
-    const DEFAULT_CLASS = '\stdClass';
+    public const DEFAULT_CLASS = '\stdClass';
 
     /**
      * Array of Closures indexed by class.
@@ -42,40 +43,44 @@ class ClassLoader
      *         '\Full\Absolute\Namespace\ClassName' => array(
      *             'myOption' => Closure
      *         ), ...
-     *     )
+     *     ).
+     *
      * @var array
      */
-    public static $extraOptionHandlers = array();
+    public static $extraOptionHandlers = [];
 
     /**
-     * Name of the class you want to load
-     * @var String
+     * Name of the class you want to load.
+     *
+     * @var string
      */
     public $class = null;
 
     /**
-     * Reflected object of the class passed in
+     * Reflected object of the class passed in.
+     *
      * @var \ReflectionClass
      */
     protected $reflected = null;
 
     /**
      * Array of options. This is a raw copy of the options passed in.
+     *
      * @var array
      */
-    protected $rawOptions = array();
+    protected $rawOptions = [];
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param array $options Array of options
-     * The option array might look like:
-     *     array(
-     *         'class' => 'Some\Class',
-     *         'some_contruct_param' => 'abc',
-     *         'some_param' => 'def',
-     *         'some_other_param' => 'sdsad'
-     *     )
+     *                       The option array might look like:
+     *                       array(
+     *                       'class' => 'Some\Class',
+     *                       'some_contruct_param' => 'abc',
+     *                       'some_param' => 'def',
+     *                       'some_other_param' => 'sdsad'
+     *                       )
      */
     public function __construct(array $options)
     {
@@ -85,7 +90,7 @@ class ClassLoader
     }
 
     /**
-     * Set the class you want to load from the raw option array
+     * Set the class you want to load from the raw option array.
      */
     protected function setClass()
     {
@@ -99,7 +104,7 @@ class ClassLoader
 
     /**
      * Recursively loads objects into any of the rawOptions that represent
-     * a class
+     * a class.
      */
     protected function loadChildClasses()
     {
@@ -115,15 +120,15 @@ class ClassLoader
     }
 
     /**
-     * Return option values indexed by name using camelCased keys
+     * Return option values indexed by name using camelCased keys.
      *
-     * @param  array  $options Array of options
+     * @param array $options Array of options
      *
      * @return mixed[] Array of options indexed by (camelCased) name
      */
     public static function optionsToCamelCase(array $options)
     {
-        $optionsByName = array();
+        $optionsByName = [];
 
         if (count($options)) {
             foreach ($options as $name => $value) {
@@ -139,7 +144,7 @@ class ClassLoader
      *   - constructor options and
      *   - extra options
      * Extra options are those that are not in the contructor. The constructor arguments determine
-     * what goes into which bucket
+     * what goes into which bucket.
      *
      * @return array Array of constructorOptions and extraOptions
      */
@@ -164,15 +169,15 @@ class ClassLoader
             array_keys($extraOptions)
         );
 
-        return array(
+        return [
             $constructorResolver->resolve($constructorOptions),
-            $extraOptionsResolver->resolve($extraOptions, $this)
-        );
+            $extraOptionsResolver->resolve($extraOptions, $this),
+        ];
     }
 
     /**
      * Instantiate the reflected object using the parsed contructor args and set
-     * extra options if any
+     * extra options if any.
      *
      * @return mixed Instance of the reflected object
      */
@@ -189,11 +194,11 @@ class ClassLoader
     }
 
     /**
-     * Indicates whether or not an option is supported by the loader
+     * Indicates whether or not an option is supported by the loader.
      *
-     * @param  string $extraOptionName Option name
+     * @param string $extraOptionName Option name
      *
-     * @return boolean Whether or not an option is supported by the loader
+     * @return bool Whether or not an option is supported by the loader
      */
     public function canHandle($extraOptionName)
     {
@@ -203,9 +208,9 @@ class ClassLoader
     }
 
     /**
-     * Get the corresponding handler for a given option
+     * Get the corresponding handler for a given option.
      *
-     * @param  string $extraOptionName Option name
+     * @param string $extraOptionName Option name
      *
      * @return \Closure|null Corresponding Closure object or null if not found
      */
@@ -225,10 +230,10 @@ class ClassLoader
     }
 
     /**
-     * Set extra options if any were requested
+     * Set extra options if any were requested.
      *
-     * @param  array $extraOptions Array of extra options (key => value)
-     * @param  mixed $instance Instance you want to set options for
+     * @param array $extraOptions Array of extra options (key => value)
+     * @param mixed $instance     Instance you want to set options for
      */
     public function loadExtraOptions($extraOptions, $instance)
     {
@@ -236,8 +241,8 @@ class ClassLoader
             if ($this->reflected->hasMethod($name)) {
                 // There is a method to handle this option
                 call_user_func_array(
-                    array($instance, $name),
-                    is_array($value) ? $value : array($value)
+                    [$instance, $name],
+                    is_array($value) ? $value : [$value]
                 );
                 continue;
             }

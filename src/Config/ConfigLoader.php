@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the Monolog Cascade package.
  *
@@ -8,19 +9,20 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Cascade\Config;
 
-use Symfony\Component\Config\FileLocator;
-use Symfony\Component\Config\Loader\DelegatingLoader;
-use Symfony\Component\Config\Loader\LoaderResolver;
+namespace Cascade\Config;
 
 use Cascade\Config\Loader\FileLoader\Json as JsonLoader;
 use Cascade\Config\Loader\FileLoader\PhpArray as ArrayFromFileLoader;
 use Cascade\Config\Loader\FileLoader\Yaml as YamlLoader;
 use Cascade\Config\Loader\PhpArray as ArrayLoader;
+use Symfony\Component\Config\FileLocator;
+use Symfony\Component\Config\Loader\DelegatingLoader;
+use Symfony\Component\Config\Loader\LoaderResolver;
 
 /**
- * Loader class that loads Yaml, JSON and array from various resources (file, php array, string)
+ * Loader class that loads Yaml, JSON and array from various resources (file, php array, string).
+ *
  * @see DelegatingLoader
  *
  * @author Raphael Antonmattei <rantonmattei@theorchard.com>
@@ -28,41 +30,38 @@ use Cascade\Config\Loader\PhpArray as ArrayLoader;
 class ConfigLoader extends DelegatingLoader
 {
     /**
-     * Locator
+     * Locator.
+     *
      * @var FileLocator
      */
     protected $locator = null;
 
     /**
-     * Instantiate a Loader object
+     * Instantiate a Loader object.
+     *
      * @todo have the locator passed to the constructor so we can load more than one file
      */
     public function __construct()
     {
         $this->locator = new FileLocator();
 
-        $loaderResolver = new LoaderResolver(array(
+        $loaderResolver = new LoaderResolver([
             // Do not change that order, it does matter as the resolver returns the first loader
             // that meets the requirements of the "supports" method for each of those loaders
             new ArrayLoader(),
             new ArrayFromFileLoader($this->locator),
             new JsonLoader($this->locator),
-            new YamlLoader($this->locator)
-        ));
+            new YamlLoader($this->locator),
+        ]);
 
         parent::__construct($loaderResolver);
     }
 
     /**
-     * Loads a configuration resource: file, array, string
-     *
-     * @param mixed $resource Resource to load
-     * @param string|null $type Not used
-     *
-     * @return array Array of config options
+     * {@inheritdoc}
      */
-    public function load($resource, $type = null)
+    public function load(mixed $resource, string $type = null) : mixed
     {
-        return parent::load($resource);
+        return parent::load($resource, $type);
     }
 }
